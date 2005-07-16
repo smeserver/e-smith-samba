@@ -1,0 +1,13 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/etc/e-smith/events/actions/create-machine-account:1.4 e-smith-samba/root/etc/e-smith/events/actions/create-machine-account:1.5
+--- e-smith-samba/root/etc/e-smith/events/actions/create-machine-account:1.4	Thu Mar 31 21:06:44 2005
++++ e-smith-samba/root/etc/e-smith/events/actions/create-machine-account	Tue Apr 19 10:19:17 2005
+@@ -27,7 +27,7 @@
+ use esmith::AccountsDB;
+ use esmith::util;
+ 
+-my $a = esmith::AccountsDB->open_ro || die "Couldn't open accounts db\n";
++my $a = esmith::AccountsDB->open || die "Couldn't open accounts db\n";
+ 
+ my $event = $ARGV [0];
+ my $machineName = $ARGV [1];

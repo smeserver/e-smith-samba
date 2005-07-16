@@ -1,0 +1,13 @@
+Index: e-smith-samba/createlinks
+diff -u e-smith-samba/createlinks:1.15 e-smith-samba/createlinks:1.16
+--- e-smith-samba/createlinks:1.15	Fri Mar 11 11:41:54 2005
++++ e-smith-samba/createlinks	Wed Jun 15 10:31:24 2005
+@@ -77,6 +77,7 @@
+ event_link("update-domain-group-maps", $event, "56");
+ safe_symlink("sigterm", "root/etc/e-smith/events/$event/services2adjust/dhcpd");
+ safe_symlink("sigterm", "root/etc/e-smith/events/$event/services2adjust/smbd");
++safe_symlink("sigterm", "root/etc/e-smith/events/$event/services2adjust/nmbd");
+ 
+ $event = "printer-create";
+ safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/smbd");
+Index: e-smith-samba/e-smith-samba.spec

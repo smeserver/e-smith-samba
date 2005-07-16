@@ -1,0 +1,36 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/etc/e-smith/events/actions/update-domain-group-maps:1.1 e-smith-samba/root/etc/e-smith/events/actions/update-domain-group-maps:1.2
+--- e-smith-samba/root/etc/e-smith/events/actions/update-domain-group-maps:1.1	Wed Feb 23 11:48:54 2005
++++ e-smith-samba/root/etc/e-smith/events/actions/update-domain-group-maps	Sun Mar 13 21:48:48 2005
+@@ -20,8 +20,8 @@
+ 	'Domain Admins' => 'admin',
+ 	'Domain Users' => 'shared',
+ 	'Domain Guests' => 'nobody',
+-    ),
+-    map { $_->prop('Description'), $_->key } $a->groups();
++    ,
++    map { $_->prop('Description'), $_->key } $a->groups());
+ 
+ my %mapping_done = ();
+ foreach (`/usr/bin/net groupmap list`)
+@@ -30,6 +30,10 @@
+     if (/^(.*?) \((S-.*)\) -> (.*)$/)
+     {
+ 	my ($nt, $sid, $group) = ($1, $2, $3);
++
++	# Skip local groups
++	next if ($sid =~ /^S-1-5-32-\d+$/);
++
+ 	if (exists $mappings{$nt})
+ 	{
+ 	    if ($sid =~ /^$local_sid-/)
+@@ -50,7 +54,8 @@
+ 	}
+ 	else
+ 	{
+-	    warn("Ignoring mapping for nt group $nt\n");
++	    # Non existant group
++	    system('/usr/bin/net','groupmap','delete',"sid=$sid");
+ 	}
+     }
+ }

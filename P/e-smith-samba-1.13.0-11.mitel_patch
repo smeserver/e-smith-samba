@@ -1,0 +1,7 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/etc/e-smith/templates.metadata/etc/samba/smb.conf:1.1 e-smith-samba/root/etc/e-smith/templates.metadata/etc/samba/smb.conf:1.2
+--- e-smith-samba/root/etc/e-smith/templates.metadata/etc/samba/smb.conf:1.1	Fri Feb 18 17:11:42 2005
++++ e-smith-samba/root/etc/e-smith/templates.metadata/etc/samba/smb.conf	Tue Feb 22 15:20:22 2005
+@@ -1 +1,2 @@
+ TEMPLATE_PATH="/etc/smb.conf"
++OUTPUT_FILENAME="/etc/samba/smb.conf"

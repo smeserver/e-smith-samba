@@ -1,0 +1,22 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/var/service/nmbd/log/run:1.1 e-smith-samba/root/var/service/nmbd/log/run:1.2
+--- e-smith-samba/root/var/service/nmbd/log/run:1.1	Mon Nov 17 14:30:21 2003
++++ e-smith-samba/root/var/service/nmbd/log/run	Mon Feb  7 13:24:55 2005
+@@ -1,5 +1,6 @@
+ #!/bin/sh
+  
+ exec                                    \
++    /usr/local/bin/setuidgid smelog	\
+     /usr/local/bin/multilog t s5000000  \
+     /var/log/nmbd
+Index: e-smith-samba/root/var/service/smbd/log/run
+diff -u e-smith-samba/root/var/service/smbd/log/run:1.1 e-smith-samba/root/var/service/smbd/log/run:1.2
+--- e-smith-samba/root/var/service/smbd/log/run:1.1	Mon Nov 17 14:30:21 2003
++++ e-smith-samba/root/var/service/smbd/log/run	Mon Feb  7 13:24:55 2005
+@@ -1,5 +1,6 @@
+ #!/bin/sh
+  
+ exec                                    \
++    /usr/local/bin/setuidgid smelog	\
+     /usr/local/bin/multilog t s5000000  \
+     /var/log/smbd

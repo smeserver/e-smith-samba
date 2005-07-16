@@ -1,0 +1,129 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11addMachineScript:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11addMachineScript	Fri Feb 18 10:30:08 2005
+@@ -0,0 +1,4 @@
++{
++# Script to setup machine accounts
++}
++add machine script = /sbin/e-smith/signal-event machine-account-create '%u'
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11adminUsers
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11adminUsers:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11adminUsers	Fri Feb 18 10:28:18 2005
+@@ -0,0 +1 @@
++admin users = admin
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11displayCharSet
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11displayCharSet:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11displayCharSet	Fri Feb 18 10:25:17 2005
+@@ -0,0 +1,5 @@
++{
++    my $DisplayCharSet = $smb{DisplayCharSet} || "ISO8859-1";
++
++    "display charset = $DisplayCharSet";
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11serverString
+diff -u e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11serverString:1.2 e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11serverString:1.3
+--- e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11serverString:1.2	Thu Feb 17 18:04:02 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/11serverString	Fri Feb 18 10:25:17 2005
+@@ -1,7 +1,7 @@
+ {
+ # server string is the equivalent of the NT Description field
+ 
+-   my $server_string = $set{ServerString} || 'SME Server';
++   my $server_string = $smb{ServerString} || 'SME Server';
+ 
+    "server string = $server_string";
+ }
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,9 @@
++{
++    use esmith::AccountsDB;
++    # Convert the passed hash for the ibay object back into an object.
++    $ibay = bless \%ibay, 'esmith::DB::db::Record';
++
++    my $key = $ibay->key;
++    $OUT .= "[$key]\n";
++    $OUT .= "comment = $properties{'Name'}";
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,14 @@
++{
++    return "" unless (($ibay->prop('RecycleBin') || 'disabled') eq 'enabled');
++
++    $OUT .= "vfs object = recycle:repository recycle:keeptree ";
++    $OUT .= "recycle:versions recycle:touch recycle:exclude recycle:exclude_dir\n";
++    $OUT .= "  recycle:repository=Recycle Bin\n";
++    $OUT .= "  recycle:keeptree=True\n";
++    $OUT .= "  recycle:versions=";
++    $OUT .= (($ibay->prop('KeepVersions') || 'disabled') eq 'enabled') ?
++		"True\n" : "False\n";
++    $OUT .= "  recycle:touch=True\n";
++    $OUT .= "  recycle:exclude=*.tmp|*.temp|*.o|*.obj|~\$*\n";
++    $OUT .= "  recycle:exclude_dir=/tmp|/temp|/cache";
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15path
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15path:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15path	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,12 @@
++{
++    #---------------------------------------
++    # If no public access, have the share go directly to the files
++    # subdirectory (for easier drive mappings)
++    # Otherwise, have the share mapping show all three subfolders
++    #---------------------------------------
++    $OUT .= "path = /home/e-smith/files/ibays/$key";
++    if ($ibay->prop('PublicAccess') eq 'none')
++    {
++	$OUT .= "/files";
++    }
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15permissions
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15permissions:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15permissions	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,12 @@
++{
++    # Make the defaults really stupid
++    my %perms = (
++	    'wr-admin-rd-group' => '0640',
++	    'wr-group-rd-group' => '0660',
++	    'wr-group-rd-everyone' => '0664',
++	);
++    my $fmode = $perms{$ibay->prop('UserAccess')} || "0000";
++
++    $OUT .= "create mode = $fmode\n";
++    $OUT .= "inherit permissions = yes";
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15printable
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15printable:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/15printable	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,3 @@
++{
++    $OUT .= "printable = no";
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/20readonly
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/20readonly:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/20readonly	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,3 @@
++{
++    $OUT .= "read only = no";
++}
+Index: e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/20writable
+diff -u /dev/null e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/20writable:1.1
+--- /dev/null	Fri Feb 18 10:30:44 2005
++++ e-smith-samba/root/etc/e-smith/templates/etc/smb.conf/ibays/20writable	Fri Feb 18 10:22:37 2005
+@@ -0,0 +1,3 @@
++{
++    $OUT .= "writable = yes";
++}
