@@ -6,3 +6,8 @@ Fri Jul 15 20:51:00 2005                       Gordon Rowell (gordonr)
 
 Default smb{UnixCharSet} to UTF8, but keep existing systems at ISO8859-1
 ----------------------------------------------------------------------
+Sat Jul 16 11:54:44 2005                           Shad Lords (slords)
+
+Update temaplte
+
+----------------------------------------------------------------------
