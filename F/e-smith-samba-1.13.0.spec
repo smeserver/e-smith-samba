@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.0
-%define release 19
+%define release 19sme01
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -25,6 +25,7 @@ Patch12: e-smith-samba-1.13.0-16.mitel_patch
 Patch13: e-smith-samba-1.13.0-17.mitel_patch
 Patch14: e-smith-samba-1.13.0-18.mitel_patch
 Patch15: e-smith-samba-1.13.0-19.mitel_patch
+Patch100: e-smith-samba-1.13.0-UTF8.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -34,6 +35,12 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Sat Jul 16 2005 Gordon Rowell <gordonr@gormand.com.au>
+- [1.13.0-19sme01]
+- Default smb{UnixCharSet} == UTF8
+- If smb record exists (i.e. upgrade), but UnixCharSet is not defined,
+  set it to ISO8859-1 to maintain filenames on upgrade [SF: 1204695]
+
 * Wed Jun 15 2005 Charlie Brady <charlieb@e-smith.com>
 - [1.13.0-19]
 - Restart nmbd during workgroup-update event. [SF: 1220928]
@@ -544,7 +551,7 @@ AutoReqProv: no
 - [1.2.0-02]
 - Reconfigure and restart dhcpd in workgroup update event, in case a
   WINS server has been added. See #2364.
-- Purge %prep section of lots of stuff which is no longer required
+- Purge prep section of lots of stuff which is no longer required
   since the rollRPM.
 
 * Tue Dec 11 2001 Jason Miller <jay@e-smith.com>
@@ -632,7 +639,7 @@ AutoReqProv: no
 - Explicitly return an empty string from some fragments if 
   $SambaDomainMaster=no, just to be tidy
 - Used new e-smith-devtools to set /home/e-smith/files/samba to 
-  02755,admin,admin and removed explicit chmod from %prep
+  02755,admin,admin and removed explicit chmod from prep
 
 * Thu Nov 15 2001 Gordon Rowell <gordonr@e-smith.com>
 - [1.1.0-21]
@@ -774,6 +781,7 @@ done
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch100 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

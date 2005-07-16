@@ -1,0 +1,29 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smb/UnixCharSet mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smb/UnixCharSet
+--- e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smb/UnixCharSet	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smb/UnixCharSet	2005-07-15 20:44:15.367024064 -0600
+@@ -0,0 +1 @@
++UTF8
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/migrate/20smb mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/migrate/20smb
+--- e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/migrate/20smb	2005-07-15 20:46:51.228412352 -0600
++++ mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/migrate/20smb	2005-07-15 20:46:37.471278848 -0600
+@@ -1,6 +1,6 @@
+ {
+     my $smb = $DB->get('smb') ||
+-		$DB->new_record("smb");;
++		$DB->new_record("smb");
+ 
+     my %new_props = ();
+ 
+@@ -30,6 +30,11 @@
+ 	$new_props{UnixCharSet} = $ClientCodePage;
+         $smb->delete_prop('ClientCodePage');
+     }
+-    
++   
++    if ($smb->prop('status') and not $smb->prop('UnixCharSet'))
++    {
++	$new_props{UnixCharSet} ||= 'ISO8859-1';
++    }
++ 
+     $smb->merge_props(%new_props);
+ }
