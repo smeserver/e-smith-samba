@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.0
-%define release 19sme02
+%define release 19sme03
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -27,6 +27,7 @@ Patch14: e-smith-samba-1.13.0-18.mitel_patch
 Patch15: e-smith-samba-1.13.0-19.mitel_patch
 Patch16: e-smith-samba-1.13.0-UTF8.patch
 Patch17: e-smith-samba-1.13.0-UTF8.patch2
+Patch18: e-smith-samba-1.13.0-dbmoved.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -36,6 +37,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Sat Jul 16 2005 Shad L. Lords <slords@mail.com>
+- [1.13.0-19sme03]
+- Updates for db move
+
 * Sat Jul 16 2005 Shad L. Lords <slords@mail.com>
 - [1.13.0-19sme02]
 - Change template fragment to default to UTF8 as well
@@ -788,6 +793,7 @@ done
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
+%patch18 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
