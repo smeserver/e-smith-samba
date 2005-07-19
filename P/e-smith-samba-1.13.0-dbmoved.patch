@@ -20,7 +20,7 @@ diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/events/ac
  {
      die "$user is not a user account\n"
 -        unless ( db_get_type(\%accounts, $user) eq "user");
-+        unless ( grep /^$user$/ @users );
++        unless ( grep /^$user$/, @users );
  
      my $dir = "/home/e-smith/files/samba/profiles/$user";
     
