@@ -1,0 +1,61 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.1.1.1 e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.2
+--- e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.1.1.1	Tue Mar 12 17:19:38 2002
++++ e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir	Mon Jul 18 13:49:17 2005
+@@ -27,18 +27,19 @@
+ use esmith::util;
+ use esmith::db;
+ 
+-tie my %accounts, 'esmith::config', '/home/e-smith/accounts';
++use esmith::AccountsDB;
++my $adb = esmith::AccountsDB->open_ro();
+ 
+ my $event = $ARGV [0];
+ 
+-my @users = grep { db_get_type(\%accounts, $_) eq 'user' } keys %accounts;
++my @users = map { $_->key } $adb->users;
+ 
+ my @newusers = ($event eq "post-upgrade") ? @users : $ARGV[1] ;
+ 
+ foreach my $user ( @newusers )
+ {
+     die "$user is not a user account\n"
+-        unless ( db_get_type(\%accounts, $user) eq "user");
++        unless ( grep /^$user$/ @users );
+ 
+     my $dir = "/home/e-smith/files/samba/profiles/$user";
+    
+Index: e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir
+diff -u e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir:1.2 e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir:1.3
+--- e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir:1.2	Tue May 20 17:50:00 2003
++++ e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir	Mon Jul 18 13:49:17 2005
+@@ -28,12 +28,14 @@
+ use esmith::db;
+ use File::Path;
+ 
+-tie my %accounts, 'esmith::config', '/home/e-smith/accounts';
++use esmith::AccountsDB;
++my $adb = esmith::AccountsDB->open_ro();
+ 
+ my $event = $ARGV [0];
+ my $account = $ARGV [1];
+ 
+-unless ( db_get_type(\%accounts, $account) eq "user-deleted" )
++$a = $adb->get($account) || undef;
++unless ( defined $a && $a->prop('type') eq "user-deleted" )
+ {
+     warn "$account is not a user account\n";
+     exit (0);
+Index: e-smith-samba/root/etc/rc.d/init.d/supervise/smb
+diff -u e-smith-samba/root/etc/rc.d/init.d/supervise/smb:1.2 e-smith-samba/root/etc/rc.d/init.d/supervise/smb:1.3
+--- e-smith-samba/root/etc/rc.d/init.d/supervise/smb:1.2	Thu Feb 17 18:04:02 2005
++++ e-smith-samba/root/etc/rc.d/init.d/supervise/smb	Mon Jul 18 13:49:17 2005
+@@ -3,7 +3,7 @@
+ # Source function library.
+ . /etc/rc.d/init.d/functions
+ 
+-STATUS=$(/sbin/e-smith/db /home/e-smith/configuration getprop smb status)
++STATUS=$(/sbin/e-smith/db configuration getprop smb status)
+ 
+ case $1 in
+     *start)

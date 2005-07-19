@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.0
-%define release 19sme03
+%define release 21
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -25,9 +25,8 @@ Patch12: e-smith-samba-1.13.0-16.mitel_patch
 Patch13: e-smith-samba-1.13.0-17.mitel_patch
 Patch14: e-smith-samba-1.13.0-18.mitel_patch
 Patch15: e-smith-samba-1.13.0-19.mitel_patch
-Patch16: e-smith-samba-1.13.0-UTF8.patch
-Patch17: e-smith-samba-1.13.0-UTF8.patch2
-Patch18: e-smith-samba-1.13.0-dbmoved.patch
+Patch16: e-smith-samba-1.13.0-20.mitel_patch
+Patch17: e-smith-samba-1.13.0-21.mitel_patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -37,16 +36,14 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
-* Sat Jul 16 2005 Shad L. Lords <slords@mail.com>
-- [1.13.0-19sme03]
-- Updates for db move
+* Mon Jul 18 2005 Charlie Brady <charlieb@e-smith.com>
+- [1.13.0-21]
+- Avoid use of deprecated tie interface to accounts db. Use "config"
+  rather than "db" to fetch status in run script. [SF: 1216546]
 
-* Sat Jul 16 2005 Shad L. Lords <slords@mail.com>
-- [1.13.0-19sme02]
-- Change template fragment to default to UTF8 as well
-
-* Sat Jul 16 2005 Gordon Rowell <gordonr@gormand.com.au>
-- [1.13.0-19sme01]
+* Mon Jul 18 2005 Charlie Brady <charlieb@e-smith.com>
+- [1.13.0-20]
+- Charset changes from Gordon: on new installs, default to UTF8.
 - Default smb{UnixCharSet} == UTF8
 - If smb record exists (i.e. upgrade), but UnixCharSet is not defined,
   set it to ISO8859-1 to maintain filenames on upgrade [SF: 1204695]
@@ -793,7 +790,6 @@ done
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
-%patch18 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
