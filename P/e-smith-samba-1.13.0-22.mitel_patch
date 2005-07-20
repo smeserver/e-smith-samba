@@ -1,0 +1,13 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.2 e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.3
+--- e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.2	Mon Jul 18 13:49:17 2005
++++ e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir	Tue Jul 19 22:15:42 2005
+@@ -39,7 +39,7 @@
+ foreach my $user ( @newusers )
+ {
+     die "$user is not a user account\n"
+-        unless ( grep /^$user$/ @users );
++        unless ( grep /^$user$/, @users );
+ 
+     my $dir = "/home/e-smith/files/samba/profiles/$user";
+    
