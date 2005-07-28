@@ -31,3 +31,9 @@ Tue Jul 19 23:12:51 2005                           Shad Lords (slords)
 Sync with Mitel
 
 ----------------------------------------------------------------------
+Thu Jul 28 13:07:45 2005                           Shad Lords (slords)
+
+- Add TCPPorts/UDPPorts and access to smbd/nmbd [SF: 1246986]
+
+
+----------------------------------------------------------------------

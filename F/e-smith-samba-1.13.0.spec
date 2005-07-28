@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.0
-%define release 22
+%define release 22sme01
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -28,6 +28,7 @@ Patch15: e-smith-samba-1.13.0-19.mitel_patch
 Patch16: e-smith-samba-1.13.0-20.mitel_patch
 Patch17: e-smith-samba-1.13.0-21.mitel_patch
 Patch18: e-smith-samba-1.13.0-22.mitel_patch
+Patch19: e-smith-samba-1.13.0-firewall.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -37,6 +38,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Thu Jul 28 2005 Shad L. Lords <slords@mail.com>
+- [1.13.0-22sme01]
+- Add TCPPorts/UDPPorts and access to smbd/nmbd [SF: 1246986]
+
 * Tue Jul 19 2005 Charlie Brady <charlieb@e-smith.com>
 - [1.13.0-22]
 - Fix missing comma [SF: 1216546]
@@ -796,6 +801,7 @@ done
 %patch16 -p1
 %patch17 -p1
 %patch18 -p1
+%patch19 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

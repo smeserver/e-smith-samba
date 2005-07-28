@@ -1,0 +1,20 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/access mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/access
+--- e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/access	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/access	2005-07-28 12:50:32.084112544 -0600
+@@ -0,0 +1 @@
++private
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/UDPPorts mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/UDPPorts
+--- e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/UDPPorts	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/nmbd/UDPPorts	2005-07-28 12:50:28.998581616 -0600
+@@ -0,0 +1 @@
++137,138
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/access mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/access
+--- e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/access	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/access	2005-07-28 12:50:33.548889864 -0600
+@@ -0,0 +1 @@
++private
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts
+--- e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.13.0/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts	2005-07-28 12:50:39.090047480 -0600
+@@ -0,0 +1 @@
++139,445
