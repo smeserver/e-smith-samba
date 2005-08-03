@@ -1,0 +1,58 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.3 e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.4
+--- e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir:1.3	Tue Jul 19 22:15:42 2005
++++ e-smith-samba/root/etc/e-smith/events/actions/user-create-profiledir	Tue Aug  2 17:16:52 2005
+@@ -1,6 +1,6 @@
+ #!/usr/bin/perl -w
+ #----------------------------------------------------------------------
+-# copyright (C) 2001 Mitel Networks Corporation
++# copyright (C) 2001-2005 Mitel Networks Corporation
+ # 
+ # This program is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+@@ -16,16 +16,12 @@
+ # along with this program; if not, write to the Free Software
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ # 
+-# Technical support for this program is available from Mitel Networks 
+-# Please visit our web site www.e-smith.com for details.
+ #----------------------------------------------------------------------
+ package esmith;
+ 
+ use strict;
+ use Errno;
+-use esmith::config;
+ use esmith::util;
+-use esmith::db;
+ 
+ use esmith::AccountsDB;
+ my $adb = esmith::AccountsDB->open_ro();
+Index: e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir
+diff -u e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir:1.3 e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir:1.4
+--- e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir:1.3	Mon Jul 18 13:49:17 2005
++++ e-smith-samba/root/etc/e-smith/events/actions/user-delete-profiledir	Tue Aug  2 17:16:52 2005
+@@ -1,6 +1,6 @@
+ #!/usr/bin/perl -w
+ #----------------------------------------------------------------------
+-# copyright (C) 1999-2003 Mitel Networks Corporation
++# copyright (C) 1999-2005 Mitel Networks Corporation
+ # 
+ # This program is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+@@ -16,16 +16,11 @@
+ # along with this program; if not, write to the Free Software
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ # 
+-# Technical support for this program is available from Mitel Networks 
+-# Please visit our web site www.mitel.com/sme/ for details.
+ #----------------------------------------------------------------------
+ package esmith;
+ 
+ use strict;
+ use Errno;
+-use esmith::config;
+-use esmith::util;
+-use esmith::db;
+ use File::Path;
+ 
+ use esmith::AccountsDB;

@@ -1,0 +1,24 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u /dev/null e-smith-samba/root/etc/e-smith/db/configuration/defaults/nmbd/UDPPorts:1.1
+--- /dev/null	Tue Aug  2 16:56:05 2005
++++ e-smith-samba/root/etc/e-smith/db/configuration/defaults/nmbd/UDPPorts	Tue Aug  2 16:55:17 2005
+@@ -0,0 +1 @@
++137,138
+Index: e-smith-samba/root/etc/e-smith/db/configuration/defaults/nmbd/access
+diff -u /dev/null e-smith-samba/root/etc/e-smith/db/configuration/defaults/nmbd/access:1.1
+--- /dev/null	Tue Aug  2 16:56:05 2005
++++ e-smith-samba/root/etc/e-smith/db/configuration/defaults/nmbd/access	Tue Aug  2 16:55:17 2005
+@@ -0,0 +1 @@
++private
+Index: e-smith-samba/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts
+diff -u /dev/null e-smith-samba/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts:1.1
+--- /dev/null	Tue Aug  2 16:56:05 2005
++++ e-smith-samba/root/etc/e-smith/db/configuration/defaults/smbd/TCPPorts	Tue Aug  2 16:55:17 2005
+@@ -0,0 +1 @@
++139,445
+Index: e-smith-samba/root/etc/e-smith/db/configuration/defaults/smbd/access
+diff -u /dev/null e-smith-samba/root/etc/e-smith/db/configuration/defaults/smbd/access:1.1
+--- /dev/null	Tue Aug  2 16:56:05 2005
++++ e-smith-samba/root/etc/e-smith/db/configuration/defaults/smbd/access	Tue Aug  2 16:55:17 2005
+@@ -0,0 +1 @@
++private
