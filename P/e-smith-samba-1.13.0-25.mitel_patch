@@ -1,0 +1,20 @@
+Index: e-smith-samba/e-smith-samba.spec
+diff -u /dev/null e-smith-samba/root/home/e-smith/files/server-resources/regedit/win98pwdcache.reg:1.1
+--- /dev/null	Tue Aug  9 16:39:16 2005
++++ e-smith-samba/root/home/e-smith/files/server-resources/regedit/win98pwdcache.reg	Tue Aug  9 16:38:25 2005
+@@ -0,0 +1,5 @@
++REGEDIT4
++
++[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Network]
++"DisablePwdCaching"=dword:00000001
++
+Index: e-smith-samba/root/home/e-smith/files/server-resources/regedit/winxplogon.reg
+diff -u /dev/null e-smith-samba/root/home/e-smith/files/server-resources/regedit/winxplogon.reg:1.1
+--- /dev/null	Tue Aug  9 16:39:16 2005
++++ e-smith-samba/root/home/e-smith/files/server-resources/regedit/winxplogon.reg	Tue Aug  9 16:38:25 2005
+@@ -0,0 +1,5 @@
++REGEDIT4
++
++[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\netlogon\parameters]
++"RequireSignOrSeal"=dword:00000000
++

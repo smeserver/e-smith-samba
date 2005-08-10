@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.0
-%define release 24
+%define release 25
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -30,15 +30,21 @@ Patch17: e-smith-samba-1.13.0-21.mitel_patch
 Patch18: e-smith-samba-1.13.0-22.mitel_patch
 Patch19: e-smith-samba-1.13.0-23.mitel_patch
 Patch20: e-smith-samba-1.13.0-24.mitel_patch
+Patch21: e-smith-samba-1.13.0-25.mitel_patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools >= 1.13.1-03
+Obsoletes: e-smith-regedit
 Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Tue Aug  9 2005 Charlie Brady <charlieb@e-smith.com>
+- [1.13.0-25]
+- Roll in content from e-smith-regedit, and obsolete it.
+
 * Tue Aug  2 2005 Charlie Brady <charlieb@e-smith.com>
 - [1.13.0-24]
 - Remove redundent and deprecated use of esmith::config and esmith::db
@@ -809,6 +815,7 @@ done
 %patch18 -p1
 %patch19 -p1
 %patch20 -p1
+%patch21 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
