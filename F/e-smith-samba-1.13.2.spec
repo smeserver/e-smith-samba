@@ -1,36 +1,16 @@
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
-%define version 1.13.0
-%define release 25
+%define version 1.13.2
+%define release 03
 Version: %{version}
 Release: %{release}
 License: GPL
 Vendor: Mitel Networks Corporation
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch0: e-smith-samba-1.13.0-03.mitel_patch
-Patch1: e-smith-samba-1.13.0-04.mitel_patch
-Patch2: e-smith-samba-1.13.0-05.mitel_patch
-Patch3: e-smith-samba-1.13.0-06.mitel_patch
-Patch4: e-smith-samba-1.13.0-07.mitel_patch
-Patch5: e-smith-samba-1.13.0-08.mitel_patch
-Patch6: e-smith-samba-1.13.0-09.mitel_patch
-Patch7: e-smith-samba-1.13.0-11.mitel_patch
-Patch8: e-smith-samba-1.13.0-12.mitel_patch
-Patch9: e-smith-samba-1.13.0-13.mitel_patch
-Patch10: e-smith-samba-1.13.0-14.mitel_patch
-Patch11: e-smith-samba-1.13.0-15.mitel_patch
-Patch12: e-smith-samba-1.13.0-16.mitel_patch
-Patch13: e-smith-samba-1.13.0-17.mitel_patch
-Patch14: e-smith-samba-1.13.0-18.mitel_patch
-Patch15: e-smith-samba-1.13.0-19.mitel_patch
-Patch16: e-smith-samba-1.13.0-20.mitel_patch
-Patch17: e-smith-samba-1.13.0-21.mitel_patch
-Patch18: e-smith-samba-1.13.0-22.mitel_patch
-Patch19: e-smith-samba-1.13.0-23.mitel_patch
-Patch20: e-smith-samba-1.13.0-24.mitel_patch
-Patch21: e-smith-samba-1.13.0-25.mitel_patch
+Patch0: e-smith-samba-1.13.2-02.mitel_patch
+Patch1: e-smith-samba-1.13.2-03.mitel_patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -41,6 +21,34 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Tue Nov 15 2005 Gordon Rowell <gordonr@e-smith.com>
+- [1.13.2-03]
+- Create and use default for  smb{UseClientDriver} [SF: 1357840]
+
+* Tue Nov 15 2005 Gordon Rowell <gordonr@e-smith.com>
+- [1.13.2-02]
+- Change browsable -> browseable for consistency [SF: 1357840]
+
+* Fri Oct 14 2005 Gordon Rowell <gordonr@e-smith.com>
+- [1.13.2-01]
+- Remove L10Ns from base packages [SF: 1309520]
+
+* Fri Oct 14 2005 Gordon Rowell <gordonr@e-smith.com>
+- [1.13.1-01]
+- New dev stream before relocating L10Ns
+
+* Fri Sep 30 2005 Gordon Rowell <gordonr@e-smith.com>
+- [1.13.0-28]
+- Added Italian L10N - Thanks Filippo Carletti [SF: 1309266]
+
+* Mon Sep 26 2005 Gordon Rowell <gordonr@e-smith.com>
+- [1.13.0-27]
+- Added German L10N - Thanks Dietmar Berteld [SF: 1293325]
+
+* Mon Sep 19 2005 Charlie Brady <charlieb@e-smith.com>
+- [1.13.0-26]
+- Fix hosts allow specification. [SF: 1295752]
+
 * Tue Aug  9 2005 Charlie Brady <charlieb@e-smith.com>
 - [1.13.0-25]
 - Roll in content from e-smith-regedit, and obsolete it.
@@ -796,26 +804,6 @@ do
 done
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
-%patch20 -p1
-%patch21 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
