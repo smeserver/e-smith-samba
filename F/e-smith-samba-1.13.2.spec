@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 03sme01
+%define release 03sme02
 Version: %{version}
 Release: %{release}
 License: GPL
