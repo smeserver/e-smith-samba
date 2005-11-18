@@ -1,0 +1,12 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare
+--- e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare	2005-11-19 07:58:22.039357508 +1100
++++ mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare	2005-11-19 07:57:57.633630298 +1100
+@@ -3,7 +3,7 @@
+ # This share is writable according to Unix file permissions (admin:admin)
+ 
+     my $u_c_d = $smb{UseClientDriver} || "yes";;
+-    ml $writable = ($u_c_d eq "yes") ? "no" : "yes";
++    my $writable = ($u_c_d eq "yes") ? "no" : "yes";
+ 
+     $OUT = <<HERE;
+ [print$]
