@@ -12,6 +12,7 @@ Source: %{name}-%{version}.tar.gz
 Patch0: e-smith-samba-1.13.2-02.mitel_patch
 Patch1: e-smith-samba-1.13.2-03.mitel_patch
 Patch100: e-smith-samba-1.13.2-printershare.patch
+Patch101: e-smith-samba-1.13.2-printershare.patch2
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -22,6 +23,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Sat Nov 19 2005 Gordon Rowell <gordonr@gormand.com.au>
+- [1.13.2-03sme02]
+- And escape the $ in [print$] [SF: 1357840]
+
 * Sat Nov 19 2005 Gordon Rowell <gordonr@gormand.com.au>
 - [1.13.2-03sme01]
 - Correct typo in last fix [SF: 1357840]
@@ -810,6 +815,7 @@ done
 %patch0 -p1
 %patch1 -p1
 %patch100 -p1
+%patch101 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
