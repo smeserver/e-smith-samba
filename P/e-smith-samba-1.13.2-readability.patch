@@ -1,0 +1,21 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup
+--- e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup	2005-02-19 03:02:56.000000000 +1100
++++ mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/00Setup	2005-12-05 23:08:24.730287605 +1100
+@@ -4,6 +4,6 @@
+     $ibay = bless \%ibay, 'esmith::DB::db::Record';
+ 
+     $key = $ibay->key;
+-    $OUT .= "[$key]\n";
++    $OUT .= "\n[$key]\n";
+     $OUT .= "comment = " . $ibay->prop('Name');
+ }
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin
+--- e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin	2005-02-19 02:22:37.000000000 +1100
++++ mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin	2005-12-05 23:08:24.730287605 +1100
+@@ -1,5 +1,5 @@
+ {
+-    return "" unless (($ibay->prop('RecycleBin') || 'disabled') eq 'enabled');
++    return "# Recycle Bin disabled" unless (($ibay->prop('RecycleBin') || 'disabled') eq 'enabled');
+ 
+     $OUT .= "vfs object = recycle:repository recycle:keeptree ";
+     $OUT .= "recycle:versions recycle:touch recycle:exclude recycle:exclude_dir\n";

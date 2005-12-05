@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 05
+%define release 06
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -12,6 +12,7 @@ Source: %{name}-%{version}.tar.gz
 Patch0: e-smith-samba-1.13.2-02.mitel_patch
 Patch1: e-smith-samba-1.13.2-03.mitel_patch
 Patch2: e-smith-samba-1.13.2-04.mitel_patch
+Patch3: e-smith-samba-1.13.2-readability.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -22,6 +23,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Mon Dec 05 2005 Filippo Carletti <carletti@mobilia.it> 1.13.2-06
+- Better smb.conf readability [SME067]
+
 * Wed Nov 30 2005 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-05
 - Bump release number only
 
@@ -813,6 +817,7 @@ done
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
