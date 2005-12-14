@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 06
+%define release 07
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -13,6 +13,7 @@ Patch0: e-smith-samba-1.13.2-02.mitel_patch
 Patch1: e-smith-samba-1.13.2-03.mitel_patch
 Patch2: e-smith-samba-1.13.2-04.mitel_patch
 Patch3: e-smith-samba-1.13.2-readability.patch
+Patch4: e-smith-samba-1.13.2-oplocks.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -23,6 +24,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Wed Dec 14 2005 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-07
+- Default smb{OpLocks} == enabled. Setting it to disabled will 
+  disable oplocks [SME: 318]
+
 * Mon Dec 05 2005 Filippo Carletti <carletti@mobilia.it> 1.13.2-06
 - Better smb.conf readability [SME067]
 
@@ -818,6 +823,7 @@ done
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
