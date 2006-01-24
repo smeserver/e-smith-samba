@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 07
+%define release 08
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -14,6 +14,8 @@ Patch1: e-smith-samba-1.13.2-03.mitel_patch
 Patch2: e-smith-samba-1.13.2-04.mitel_patch
 Patch3: e-smith-samba-1.13.2-readability.patch
 Patch4: e-smith-samba-1.13.2-oplocks.patch
+Patch5: e-smith-samba-1.13.2-homesRecycleBin.patch
+Patch6: e-smith-samba-1.13.2-homesRecycleBin.patch2
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -24,6 +26,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Tue Jan 24 2006 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-08
+- Add fragment to add recycle bin if smb{RecycleBin} == enabled [SME: 429]
+- Default smb{RecycleBin} == disabled [SME: 429]
+
 * Wed Dec 14 2005 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-07
 - Default smb{OpLocks} == enabled. Setting it to disabled will 
   disable oplocks [SME: 318]
@@ -824,6 +830,8 @@ done
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
