@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 09
+%define release 10
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -17,6 +17,7 @@ Patch4: e-smith-samba-1.13.2-oplocks.patch
 Patch5: e-smith-samba-1.13.2-homesRecycleBin.patch
 Patch6: e-smith-samba-1.13.2-homesRecycleBin.patch2
 Patch7: e-smith-samba-1.13.2-homesRecycleBin.patch3
+Patch8: e-smith-samba-1.13.2-PasswordSync.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -27,6 +28,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Wed Jan 25 2006 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-10
+- Add passwd and passwd chat definition so that password sync works [SME: 565]
+
 * Wed Jan 25 2006 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-09
 - Fix logic in last change w.r.t. KeepVersions [SME: 429]
 - Add default smb{KeepVersions} == disabled [SME: 429]
@@ -838,6 +842,7 @@ done
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
