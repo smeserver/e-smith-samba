@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 12
+%define release 13
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -20,6 +20,7 @@ Patch7: e-smith-samba-1.13.2-homesRecycleBin.patch3
 Patch8: e-smith-samba-1.13.2-PasswordSync.patch
 Patch9: e-smith-samba-1.13.2-PasswordSync.patch2
 Patch10: e-smith-samba-1.13.2-vetofiles.patch
+Patch11: e-smith-samba-1.13.2-roamingprofilespermisson.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -30,6 +31,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Fri Feb 17 2006 Gavin Weight <gweight@gmail.com> 1.13.2-13
+- Fix Roaming profiles strange permissions problem. [SME: 761]
+
 * Thu Feb 16 2006 Gavin Weight <gweight@gmail.com> 1.13.2-12
 - Added veto files line. [SME: 668]
 
@@ -853,6 +857,7 @@ done
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
