@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 13
+%define release 14
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -31,6 +31,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Tue Feb 21 2006 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-14
+- Relocate netlogon.bat from old location in post, not pre [SME: 768]
+- Remove empty /home/netlogon directory, if we can [SME: 768]
+
 * Fri Feb 17 2006 Gavin Weight <gweight@gmail.com> 1.13.2-13
 - Fix Roaming profiles strange permissions problem. [SME: 761]
 
@@ -906,17 +910,16 @@ echo "%doc COPYING"          >> %{name}-%{version}-filelist
 %clean 
 rm -rf $RPM_BUILD_ROOT
 
-%pre
+%post
 if [ -f /home/netlogon/netlogon.bat ]
 then
     mkdir -p /home/e-smith/files/samba/netlogon
     mv /home/netlogon/netlogon.bat \
        /home/e-smith/files/samba/netlogon/netlogon.bat
+
+    rmdir /home/netlogon || echo "Couldn't rmdir /home/netlogon"
 fi
 
-%preun
-
-%post
 # Revert to canonical place for smb.conf
 if [ -f /etc/smb.conf ]
 then
@@ -936,8 +939,6 @@ then
    /bin/chown admin.root /etc/samba/smbpasswd
 fi
 chown -R smelog.smelog /var/log/{smbd,nmbd}
-
-%postun
 
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
