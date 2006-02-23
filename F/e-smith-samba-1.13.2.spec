@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.13.2
-%define release 14
+%define release 15
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -21,6 +21,7 @@ Patch8: e-smith-samba-1.13.2-PasswordSync.patch
 Patch9: e-smith-samba-1.13.2-PasswordSync.patch2
 Patch10: e-smith-samba-1.13.2-vetofiles.patch
 Patch11: e-smith-samba-1.13.2-roamingprofilespermisson.patch
+Patch12: e-smith-samba-1.13.2-roamingprofilespermisson.patch2
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -31,6 +32,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Thu Feb 23 2006 Charlie Brady <charlie_brady@mitel.com> 1.13.2-15
+- Fix problem with creating user profile dir. [SME: 761,874]
+
 * Tue Feb 21 2006 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-14
 - Relocate netlogon.bat from old location in post, not pre [SME: 768]
 - Remove empty /home/netlogon directory, if we can [SME: 768]
@@ -862,6 +866,7 @@ done
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
