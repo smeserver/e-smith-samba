@@ -1,5 +1,0 @@
-diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.2/root/etc/e-smith/db/configuration/defaults/smb/RecycleBin mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/db/configuration/defaults/smb/RecycleBin
---- e-smith-samba-1.13.2/root/etc/e-smith/db/configuration/defaults/smb/RecycleBin	1970-01-01 10:00:00.000000000 +1000
-+++ mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/db/configuration/defaults/smb/RecycleBin	2006-01-24 13:29:57.944422540 +1100
-@@ -0,0 +1 @@
-+disabled

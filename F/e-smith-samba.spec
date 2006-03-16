@@ -1,27 +1,15 @@
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
-%define version 1.13.2
-%define release 15
+%define version 1.14.0
+%define release 01
 Version: %{version}
 Release: %{release}
 License: GPL
 Vendor: Mitel Networks Corporation
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch0: e-smith-samba-1.13.2-02.mitel_patch
-Patch1: e-smith-samba-1.13.2-03.mitel_patch
-Patch2: e-smith-samba-1.13.2-04.mitel_patch
-Patch3: e-smith-samba-1.13.2-readability.patch
-Patch4: e-smith-samba-1.13.2-oplocks.patch
-Patch5: e-smith-samba-1.13.2-homesRecycleBin.patch
-Patch6: e-smith-samba-1.13.2-homesRecycleBin.patch2
-Patch7: e-smith-samba-1.13.2-homesRecycleBin.patch3
-Patch8: e-smith-samba-1.13.2-PasswordSync.patch
-Patch9: e-smith-samba-1.13.2-PasswordSync.patch2
 Patch10: e-smith-samba-1.13.2-vetofiles.patch
-Patch11: e-smith-samba-1.13.2-roamingprofilespermisson.patch
-Patch12: e-smith-samba-1.13.2-roamingprofilespermisson.patch2
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -32,6 +20,13 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Thu Mar 16 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-01
+- Roll stable stream version. [SME: 1016]
+
+* Wed Mar 1 2006 Gordon Rowell <gordonr@gormand.com.au> 1.13.2-16
+- Revert veto appletalk files change. The patch is still in the SPEC
+  file so we can apply it later. [SME: 668]
+
 * Thu Feb 23 2006 Charlie Brady <charlie_brady@mitel.com> 1.13.2-15
 - Fix problem with creating user profile dir. [SME: 761,874]
 
@@ -854,19 +849,7 @@ for dir in W32ALPHA W32MIPS W32PPC W32X86 WIN40
 do
     mkdir -p root/home/e-smith/files/samba/printers/${dir}
 done
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
+# %patch10 -p1 # reverted
 
 %build
 mkdir -p root/etc/e-smith/tests
