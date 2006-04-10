@@ -2,14 +2,16 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 01
+%define release 02
 Version: %{version}
 Release: %{release}
 License: GPL
 Vendor: Mitel Networks Corporation
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch10: e-smith-samba-1.13.2-vetofiles.patch
+# Patch not applied
+Patch0: e-smith-samba-1.13.2-vetofiles.patch
+Patch1: e-smith-samba-1.14.0-PrinterAddDelete.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -20,6 +22,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Mon Apr 10 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-02
+- Ensure that Samba notices printer add/delete [SME: 1167]
+
 * Thu Mar 16 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-01
 - Roll stable stream version. [SME: 1016]
 
@@ -849,7 +854,9 @@ for dir in W32ALPHA W32MIPS W32PPC W32X86 WIN40
 do
     mkdir -p root/home/e-smith/files/samba/printers/${dir}
 done
-# %patch10 -p1 # reverted
+
+# %patch0 -p1 # reverted
+%patch1 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
