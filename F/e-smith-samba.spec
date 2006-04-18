@@ -2,16 +2,15 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 02
+%define release 03
 Version: %{version}
 Release: %{release}
 License: GPL
 Vendor: Mitel Networks Corporation
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-# Patch not applied
-Patch0: e-smith-samba-1.13.2-vetofiles.patch
-Patch1: e-smith-samba-1.14.0-PrinterAddDelete.patch
+Patch0: e-smith-samba-1.14.0-PrinterAddDelete.patch
+Patch1: e-smith-samba-1.14.0-migrate.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -22,6 +21,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Tue Apr 18 2006 Charlie Brady <charlie_brady@mitel.com> 1.14.0-03
+- Clean up log noise from migrate fragment. [SME: 1257]
+- Clean up prep section of spec file (and renumber patches).
+
 * Mon Apr 10 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-02
 - Ensure that Samba notices printer add/delete [SME: 1167]
 
@@ -839,23 +842,7 @@ Configuration files and templates for the Samba daemon.
 
 %prep
 %setup
-# Create web directories
-mkdir -p root/etc/e-smith/web/panels/manager/cgi-bin/
-# Create event directories
-mkdir -p root/etc/e-smith/events/{console-save,bootstrap-console-save}
-mkdir -p root/etc/e-smith/events/{{user,group}-{create,delete,modify}}
-mkdir -p root/etc/e-smith/events/{ibay-{create,delete,modify{,-servers}}}
-mkdir -p root/etc/e-smith/events/{{printer,network}-{create,delete}}
-mkdir -p root/etc/e-smith/events/{post-{upgrade,install}}
-mkdir -p root/etc/e-smith/events/{workgroup-update,machine-account-create}
-mkdir -p root/home/e-smith/files/samba/profiles
-mkdir -p root/home/e-smith/files/samba/printers
-for dir in W32ALPHA W32MIPS W32PPC W32X86 WIN40
-do
-    mkdir -p root/home/e-smith/files/samba/printers/${dir}
-done
-
-# %patch0 -p1 # reverted
+%patch0 -p1 
 %patch1 -p1 
 
 %build
