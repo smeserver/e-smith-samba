@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 03
+%define release 04
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -11,6 +11,7 @@ Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 Patch0: e-smith-samba-1.14.0-PrinterAddDelete.patch
 Patch1: e-smith-samba-1.14.0-migrate.patch
+Patch2: e-smith-samba-1.14.0-smbdSFlag.patch 
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -21,6 +22,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Wed May 31 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-04
+- Remove -S flag from smbd so we get useful logs from Samba [SME: 1521]
+
 * Tue Apr 18 2006 Charlie Brady <charlie_brady@mitel.com> 1.14.0-03
 - Clean up log noise from migrate fragment. [SME: 1257]
 - Clean up prep section of spec file (and renumber patches).
@@ -844,6 +848,7 @@ Configuration files and templates for the Samba daemon.
 %setup
 %patch0 -p1 
 %patch1 -p1 
+%patch2 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
