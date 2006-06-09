@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 04
+%define release 05
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -12,6 +12,7 @@ Source: %{name}-%{version}.tar.gz
 Patch0: e-smith-samba-1.14.0-PrinterAddDelete.patch
 Patch1: e-smith-samba-1.14.0-migrate.patch
 Patch2: e-smith-samba-1.14.0-smbdSFlag.patch 
+Patch3: e-smith-samba-1.14.0-samba-check-password.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -22,6 +23,10 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Fri Jun 09 2006 Charlie Brady <charlie_brady@mitel.com> 1.14.0-05
+- Add password strength checking to password change via samba (thanks
+  Federico Simoncelli and Filippo Carletti. [SME: 1523]
+
 * Wed May 31 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-04
 - Remove -S flag from smbd so we get useful logs from Samba [SME: 1521]
 
@@ -849,6 +854,7 @@ Configuration files and templates for the Samba daemon.
 %patch0 -p1 
 %patch1 -p1 
 %patch2 -p1 
+%patch3 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
@@ -890,6 +896,7 @@ rm -rf $RPM_BUILD_ROOT
     --dir '/var/service/nmbd/log' 'attr(1755,root,root)' \
     --file '/var/service/nmbd/log/run' 'attr(0755,root,root)' \
     --dir '/var/log/nmbd' 'attr(2750,smelog,smelog)' \
+    --file '/sbin/e-smith/samba_check_password' 'attr(0555,root,root)' \
     $RPM_BUILD_ROOT \
     > %{name}-%{version}-filelist
 echo "%doc COPYING"          >> %{name}-%{version}-filelist
