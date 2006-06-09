@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 05
+%define release 06
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -13,6 +13,7 @@ Patch0: e-smith-samba-1.14.0-PrinterAddDelete.patch
 Patch1: e-smith-samba-1.14.0-migrate.patch
 Patch2: e-smith-samba-1.14.0-smbdSFlag.patch 
 Patch3: e-smith-samba-1.14.0-samba-check-password.patch
+Patch4: e-smith-samba-1.14.0-samba-check-password.patch2
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -23,6 +24,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Fri Jun 09 2006 Charlie Brady <charlie_brady@mitel.com> 1.14.0-06
+- Fix case conversion in last change. [SME: 1523]
+
 * Fri Jun 09 2006 Charlie Brady <charlie_brady@mitel.com> 1.14.0-05
 - Add password strength checking to password change via samba (thanks
   Federico Simoncelli and Filippo Carletti. [SME: 1523]
@@ -855,6 +859,7 @@ Configuration files and templates for the Samba daemon.
 %patch1 -p1 
 %patch2 -p1 
 %patch3 -p1 
+%patch4 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
