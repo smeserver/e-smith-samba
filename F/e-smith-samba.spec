@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 07
+%define release 08
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -15,6 +15,7 @@ Patch2: e-smith-samba-1.14.0-smbdSFlag.patch
 Patch3: e-smith-samba-1.14.0-samba-check-password.patch
 Patch4: e-smith-samba-1.14.0-samba-check-password.patch2
 Patch5: e-smith-samba-1.14.0-getlocalsid.patch
+Patch6: e-smith-samba-1.14.0-SMBPorts.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -25,6 +26,9 @@ Requires: e-smith-lib >= 1.15.1-16
 AutoReqProv: no
 
 %changelog
+* Tue Jul 18 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-08
+- Default smb ports to 139 only to reduce log noise [SME: 1562]
+
 * Thu Jun 29 2006 Shad L. Lords <slords@mail.com> 1.14.0-07
 - Remove samba caches if getlocalsid fails [SME: 1487]
 
@@ -865,6 +869,7 @@ Configuration files and templates for the Samba daemon.
 %patch3 -p1 
 %patch4 -p1 
 %patch5 -p1 
+%patch6 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
