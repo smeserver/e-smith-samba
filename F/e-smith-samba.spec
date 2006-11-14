@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 09
+%define release 10
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -24,9 +24,15 @@ BuildArchitectures: noarch
 BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
 Requires: e-smith-lib >= 1.15.1-16
+Requires: samba
+Requires: samba-client
+Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Tue Nov 14 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-10
+- Add Requires: samba{,-client,-common} to complete dependency tree [SME: 2062]
+
 * Tue Aug 22 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-09
 - Added templates.metadata/etc/smb.conf so that 
   expand-template /etc/smb.conf generates the file in /etc/samba/ [SME: 87]
