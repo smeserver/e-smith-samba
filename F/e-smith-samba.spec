@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 10
+%define release 11
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -17,6 +17,7 @@ Patch4: e-smith-samba-1.14.0-samba-check-password.patch2
 Patch5: e-smith-samba-1.14.0-getlocalsid.patch
 Patch6: e-smith-samba-1.14.0-SMBPorts.patch
 Patch7: e-smith-samba-1.14.0-smb.conf.patch
+Patch8: e-smith-samba-1.14.0-user_group_map.patch
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -30,6 +31,10 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Fri Dec 01 2006 Shad L. Lords <slords@mail.com> 1.14.0-11
+- Map user groups so roaming profiles work [SME: 1950]
+
+* Tue Aug 22 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-09
 * Tue Nov 14 2006 Gordon Rowell <gordonr@gormand.com.au> 1.14.0-10
 - Add Requires: samba{,-client,-common} to complete dependency tree [SME: 2062]
 
@@ -882,6 +887,7 @@ Configuration files and templates for the Samba daemon.
 %patch5 -p1 
 %patch6 -p1 
 %patch7 -p1 
+%patch8 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
