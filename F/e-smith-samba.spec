@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 11
+%define release 12
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -18,6 +18,7 @@ Patch5: e-smith-samba-1.14.0-getlocalsid.patch
 Patch6: e-smith-samba-1.14.0-SMBPorts.patch
 Patch7: e-smith-samba-1.14.0-smb.conf.patch
 Patch8: e-smith-samba-1.14.0-user_group_map.patch
+Patch9: e-smith-samba-1.14.0-getlocalsid.patch2
 Packager: e-smith developers <bugs@e-smith.com>
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
@@ -31,6 +32,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Thu Dec 07 2006 Shad L. Lords <slords@mail.com> 1.14.0-12
+- Don't delete samba database.  Instead rename them.
+
 * Fri Dec 01 2006 Shad L. Lords <slords@mail.com> 1.14.0-11
 - Map user groups so roaming profiles work [SME: 1950]
 
@@ -888,6 +892,7 @@ Configuration files and templates for the Samba daemon.
 %patch6 -p1 
 %patch7 -p1 
 %patch8 -p1 
+%patch9 -p1 
 
 %build
 mkdir -p root/etc/e-smith/tests
