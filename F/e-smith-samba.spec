@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 12
+%define release 13
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -20,18 +20,23 @@ Patch6: e-smith-samba-1.14.0-SMBPorts.patch
 Patch7: e-smith-samba-1.14.0-smb.conf.patch
 Patch8: e-smith-samba-1.14.0-user_group_map.patch
 Patch9: e-smith-samba-1.14.0-getlocalsid.patch2
+Patch10: e-smith-samba-1.14.0-samba-check-password.patch3
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
-Requires: e-smith-lib >= 1.15.1-16
+Requires: e-smith-lib >= 1.16.0-10
 Requires: samba
 Requires: samba-client
 Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Tue Dec 12 2006 Federico Simoncelli <federico.simoncelli@gmail.com> 1.14.0-13
+- Modified the samba_check_password script to use the new validatePassword
+  function in esmith::util. [SME: 2100]
+
 * Thu Dec 07 2006 Shad L. Lords <slords@mail.com>
 - Update to new release naming.  No functional changes.
 - Make Packager generic
@@ -897,6 +902,7 @@ Configuration files and templates for the Samba daemon.
 %patch7 -p1 
 %patch8 -p1 
 %patch9 -p1 
+%patch10 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
