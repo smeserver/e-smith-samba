@@ -7,7 +7,7 @@ diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/events/ac
  	'Domain Guests' => 'nobody',
 -    ,
 -    map { $_->prop('Description'), $_->key } $a->groups());
-+    ((map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->users())
++    (map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->users()),
 +    (map { $_->prop('Description'), $_->key } $a->groups()));
  
  my %mapping_done = ();

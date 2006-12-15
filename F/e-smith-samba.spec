@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 13
+%define release 14
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -33,6 +33,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Thu Dec 14 2006 Shad L. Lords <slords@mail.com> 1.14.0-14
+- Fix patch to map users to groups
+
 * Tue Dec 12 2006 Federico Simoncelli <federico.simoncelli@gmail.com> 1.14.0-13
 - Modified the samba_check_password script to use the new validatePassword
   function in esmith::util. [SME: 2100]
