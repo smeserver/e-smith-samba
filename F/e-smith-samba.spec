@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 14
+%define release 15
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -21,6 +21,7 @@ Patch7: e-smith-samba-1.14.0-smb.conf.patch
 Patch8: e-smith-samba-1.14.0-user_group_map.patch
 Patch9: e-smith-samba-1.14.0-getlocalsid.patch2
 Patch10: e-smith-samba-1.14.0-samba-check-password.patch3
+Patch11: e-smith-samba-1.14.0-logondrive.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -33,6 +34,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Thu Dec 14 2006 Shad L. Lords <slords@mail.com> 1.14.0-15
+- Add template to specify logon drive. [SME: 1155]
+
 * Thu Dec 14 2006 Shad L. Lords <slords@mail.com> 1.14.0-14
 - Fix patch to map users to groups
 
@@ -906,6 +910,7 @@ Configuration files and templates for the Samba daemon.
 %patch8 -p1 
 %patch9 -p1 
 %patch10 -p1
+%patch11 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
