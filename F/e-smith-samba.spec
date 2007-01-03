@@ -34,7 +34,7 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
-* Thu Dec 14 2006 Shad L. Lords <slords@mail.com> 1.14.0-15
+* Wed Jan 03 2007 Shad L. Lords <slords@mail.com> 1.14.0-15
 - Add template to specify logon drive. [SME: 1155]
 
 * Thu Dec 14 2006 Shad L. Lords <slords@mail.com> 1.14.0-14
