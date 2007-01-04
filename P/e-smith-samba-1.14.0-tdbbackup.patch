@@ -1,0 +1,22 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/var/service/smbd/run mezzanine_patched_e-smith-samba-1.14.0/root/var/service/smbd/run
+--- e-smith-samba-1.14.0/root/var/service/smbd/run	2007-01-04 13:15:31.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/var/service/smbd/run	2007-01-04 13:14:52.000000000 -0700
+@@ -32,5 +32,18 @@
+ # Delete the printing.tdb file if it exists to force it to rebuild.
+ rm -f /var/cache/samba/printing.tdb
+ 
++# Backup critical tdb files
++for tdb in /etc/samba/secrets \
++           /var/cache/samba/account_policy \
++           /var/cache/samba/group_mapping \
++           /var/cache/samba/ntdrivers \
++           /var/cache/samba/ntforms \
++           /var/cache/samba/ntprinters \
++           /var/cache/samba/registry \
++           /var/cache/samba/share_info
++do
++    [ -r "$tdb.tdb" ] && tdbbackup "$tdb.tdb" .bak
++done
++
+ exec 2>&1
+ exec $smbd -F
