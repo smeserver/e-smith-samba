@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 16
+%define release 17
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -23,6 +23,7 @@ Patch9: e-smith-samba-1.14.0-getlocalsid.patch2
 Patch10: e-smith-samba-1.14.0-samba-check-password.patch3
 Patch11: e-smith-samba-1.14.0-logondrive.patch
 Patch12: e-smith-samba-1.14.0-tdbbackup.patch
+Patch13: e-smith-samba-1.14.0-vfs_rework.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -35,6 +36,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Sat Jan 06 2007 Shad L. Lords <slords@mail.com> 1.14.0-17
+- Rework vfs modules to allow more then just recycle bin to work. [SME: 1549]
+
 * Thu Jan 04 2007 Shad L. Lords <slords@mail.com> 1.14.0-16
 - Backup important tdb files. [SME: 2201]
 
@@ -916,6 +920,7 @@ Configuration files and templates for the Samba daemon.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
