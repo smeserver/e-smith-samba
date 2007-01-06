@@ -118,7 +118,7 @@ diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates
 +{
 +    return "" unless scalar keys %$ibay_vfs;
 +
-+    $OUT = "ibay_vfs objects = " . (join " ", keys %$ibay_vfs) . "\n";
++    $OUT = "vfs objects = " . (join " ", keys %$ibay_vfs) . "\n";
 +    foreach $mod (keys %$ibay_vfs) {
 +	foreach $opt (keys %{$ibay_vfs->{$mod}}) {
 +	    $OUT .= "  $mod:$opt=$ibay_vfs->{$mod}->{$opt}\n";
