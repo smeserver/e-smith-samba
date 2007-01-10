@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 17
+%define release 18
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -24,6 +24,7 @@ Patch10: e-smith-samba-1.14.0-samba-check-password.patch3
 Patch11: e-smith-samba-1.14.0-logondrive.patch
 Patch12: e-smith-samba-1.14.0-tdbbackup.patch
 Patch13: e-smith-samba-1.14.0-vfs_rework.patch
+Patch14: e-smith-samba-1.14.0-workgroupnum.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -36,6 +37,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Wed Jan 10 2007 Shad L. Lords <slords@mail.com> 1.14.0-18
+- Allow workgroup name be begin with numbers. [SME: 1607]
+
 * Sat Jan 06 2007 Shad L. Lords <slords@mail.com> 1.14.0-17
 - Rework vfs modules to allow more then just recycle bin to work. [SME: 1549]
 
@@ -921,6 +925,7 @@ Configuration files and templates for the Samba daemon.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
