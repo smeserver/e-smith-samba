@@ -1,0 +1,120 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/events/actions/shadow-copy-rotate mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/shadow-copy-rotate
+--- e-smith-samba-1.14.0/root/etc/e-smith/events/actions/shadow-copy-rotate	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/shadow-copy-rotate	2007-01-10 14:03:38.000000000 -0700
+@@ -0,0 +1,106 @@
++#!/usr/bin/perl
++
++use strict;
++use warnings;
++use POSIX qw(strftime); 
++use File::Path;
++use esmith::ConfigDB;
++use esmith::AccountsDB;
++
++# Routines taken from powershift of rlbackup
++sub stagger;
++sub powershift;
++sub shadowdir;
++
++my $cdb = esmith::ConfigDB->open_ro;
++my $adb = esmith::AccountsDB->open_ro();
++
++my $smb = $cdb->get('smb') or die "No smb db entry found\n";
++my $shadowdir = $smb->prop('ShadowDir') || '/home/e-smith/files/.shadow';
++my $shadowcopy = $smb->prop('ShadowCopy') || 'disabled';
++my $offset = ($smb->prop('ShadowCount') || 2) - 2;
++$offset = 0 if $offset < 0;
++
++exit unless -d $shadowdir;
++exit if $shadowcopy eq 'disabled';
++
++my $filesdir = '/home/e-smith/files';
++my $snapfmt = '@GMT-%Y.%m.%d-%H.%M.%S';
++
++# Create list of ibays and users to shadow
++my $ibays = join ',', map { $_->key } grep { ($_->prop('ShadowCopy') || 'enabled') ne 'disabled' } $adb->ibays();
++my $users = join ',', map { $_->key } grep { ($_->prop('ShadowCopy') || 'enabled') ne 'disabled' } $adb->users();
++
++# Sync directories to shadow directory
++system("rsync -aHmR --partial --exclude '\@GMT-*' --link-dest ../1 " .
++       "$filesdir/./ibays/{$ibays}/ $filesdir/./users/{$users}/home/ $shadowdir/0/") == 0 || die "Couldn't sync directories";
++
++# Shift directories using geometric roll-off (only if different)
++if ( -d "$shadowdir/1" ) {
++	if (system("diff -qr $shadowdir/0 $shadowdir/1 > /dev/null") == 0) {
++		rmtree "$shadowdir/0";
++	} else {
++		powershift(2) if -d shadowdir(-$offset);
++		for (my $i=2; $i >= -$offset; $i--) {
++			rename shadowdir($i), shadowdir($i+1) 
++		}
++	}
++} else {
++	rename "$shadowdir/0", "$shadowdir/1";
++}
++
++opendir(SHADOW, $shadowdir);
++my %snaps = map {  my @stat = stat("$shadowdir/$_"); $_ => strftime($snapfmt, gmtime($stat[9])) } 
++	    grep { -d "$shadowdir/$_" && ! /^\./ } readdir SHADOW;
++closedir(SHADOW);
++
++foreach my $ibay ($adb->ibays()) {
++	my $ibaydir = 'ibays/' . $ibay->key . ( $ibay->prop('PublicAccess') eq 'none' ? '/files' : '' );
++
++	opendir(IBAY, "$filesdir/$ibaydir") || next;
++	unlink "$filesdir/$ibaydir/$_" foreach (grep /^\@GMT-/, readdir(IBAY));
++	closedir(IBAY);
++
++	next if ($ibay->prop('ShadowCopy') || 'enabled') eq 'disabled';
++
++	foreach my $snap (keys %snaps) {
++		symlink "$shadowdir/$snap/$ibaydir", "$filesdir/$ibaydir/$snaps{$snap}" if -d "$shadowdir/$snap/$ibaydir";
++	}
++}
++
++foreach my $user ($adb->users()) {
++	my $userdir = 'users/' . $user->key . '/home';
++
++	opendir(USER, "$filesdir/$userdir") || next;
++	unlink "$filesdir/$userdir/$_" foreach (grep /^\@GMT-/, readdir(USER));
++	closedir(USER);
++
++	next if ($user->prop('ShadowCopy') || 'enabled') eq 'disabled';
++
++	foreach my $snap (keys %snaps) {
++		symlink "$shadowdir/$snap/$userdir", "$filesdir/$userdir/$snaps{$snap}" if -d "$shadowdir/$snap/$userdir";
++	}
++}
++
++sub shadowdir {
++	my $i = shift;
++	return "$shadowdir/".($i+$offset);
++}
++
++sub stagger {
++	my $i = shift;
++	return $i + ($i >> 1);
++}
++
++sub powershift {
++	my $i = shift;
++	if ( -d shadowdir(stagger($i)) ) {
++		my $n = powershift($i << 1);
++		$i = $n >> 1;
++		rename shadowdir(stagger($i)), shadowdir($n) if -d shadowdir(stagger($i));
++		rmtree shadowdir($i) if -d shadowdir($i);
++	} else {
++		rename shadowdir($i), shadowdir(stagger($i)) if -d shadowdir($i);
++	}
++	return $i;
++}
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowCount mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowCount
+--- e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowCount	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowCount	2007-01-10 14:07:29.000000000 -0700
+@@ -0,0 +1 @@
++10
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowDir mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowDir
+--- e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowDir	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/defaults/smb/ShadowDir	2007-01-10 14:07:15.000000000 -0700
+@@ -0,0 +1 @@
++/home/e-smith/files/.shadow

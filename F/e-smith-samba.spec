@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 19
+%define release 20
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -26,6 +26,7 @@ Patch12: e-smith-samba-1.14.0-tdbbackup.patch
 Patch13: e-smith-samba-1.14.0-vfs_rework.patch
 Patch14: e-smith-samba-1.14.0-workgroupnum.patch
 Patch15: e-smith-samba-1.14.0-success.patch
+Patch16: e-smith-samba-1.14.0-shadowcopy.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -38,6 +39,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Wed Jan 10 2007 Shad L. Lords <slords@mail.com> 1.14.0-20
+- Initial attempt at shadow copy script. [SME: 1549]
+
 * Wed Jan 10 2007 Shad L. Lords <slords@mail.com> 1.14.0-19
 - Add success tick to workgroup panel. [SME: 1565]
 
@@ -931,6 +935,7 @@ Configuration files and templates for the Samba daemon.
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
@@ -951,6 +956,9 @@ mkdir -p root/var/service/nmbd/supervise
 touch root/var/service/nmbd/down
 mkdir -p root/var/service/nmbd/log/supervise
 mkdir -p root/var/log/nmbd
+
+# Make storage point for shadowcopies
+mkdir -p root/home/e-smith/files/.shadow
 
 touch root/etc/e-smith/templates/etc/smb.conf/ibays/template-begin
 
