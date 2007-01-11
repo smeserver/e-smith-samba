@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 20
+%define release 21
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -27,6 +27,7 @@ Patch13: e-smith-samba-1.14.0-vfs_rework.patch
 Patch14: e-smith-samba-1.14.0-workgroupnum.patch
 Patch15: e-smith-samba-1.14.0-success.patch
 Patch16: e-smith-samba-1.14.0-shadowcopy.patch
+Patch17: e-smith-samba-1.14.0-shadowcopy.patch2
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -39,6 +40,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Wed Jan 10 2007 Shad L. Lords <slords@mail.com> 1.14.0-21
+- Make smb fragment have same logic as copy script.
+
 * Wed Jan 10 2007 Shad L. Lords <slords@mail.com> 1.14.0-20
 - Initial attempt at shadow copy script. [SME: 1549]
 
@@ -936,6 +940,7 @@ Configuration files and templates for the Samba daemon.
 %patch14 -p1
 %patch15 -p1
 %patch16 -p1
+%patch17 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
