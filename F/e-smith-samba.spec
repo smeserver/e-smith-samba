@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 21
+%define release 22
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -40,6 +40,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Thu Jan 11 2007 Shad L. Lords <slords@mail.com> 1.14.0-22
+- Include admin in user groups. [SME: 1950]
+
 * Wed Jan 10 2007 Shad L. Lords <slords@mail.com> 1.14.0-21
 - Make smb fragment have same logic as copy script.
 
