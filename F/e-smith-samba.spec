@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 22
+%define release 24
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -28,6 +28,8 @@ Patch14: e-smith-samba-1.14.0-workgroupnum.patch
 Patch15: e-smith-samba-1.14.0-success.patch
 Patch16: e-smith-samba-1.14.0-shadowcopy.patch
 Patch17: e-smith-samba-1.14.0-shadowcopy.patch2
+Patch18: e-smith-samba-1.14.0-cscpolicy.patch
+Patch19: e-smith-samba-1.14.0-ibayoplocks.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -40,6 +42,14 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Thu Jan 25 2007 Shad L. Lords <slords@mail.com> 1.14.0-24
+- Allow oplocks to be disabled per ibay [SME: 543]
+- Allow veto oplock files per ibay [SME: 1784]
+
+* Thu Jan 25 2007 Shad L. Lords <slords@mail.com> 1.14.0-23
+- Disable csc policy for roaming profiles and make optional for
+  ibays [SME: 1507]
+
 * Thu Jan 11 2007 Shad L. Lords <slords@mail.com> 1.14.0-22
 - Include admin in user groups. [SME: 1950]
 
@@ -944,6 +954,8 @@ Configuration files and templates for the Samba daemon.
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
+%patch18 -p1
+%patch19 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
