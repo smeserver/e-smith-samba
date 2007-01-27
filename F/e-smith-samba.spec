@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 24
+%define release 25
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -30,6 +30,7 @@ Patch16: e-smith-samba-1.14.0-shadowcopy.patch
 Patch17: e-smith-samba-1.14.0-shadowcopy.patch2
 Patch18: e-smith-samba-1.14.0-cscpolicy.patch
 Patch19: e-smith-samba-1.14.0-ibayoplocks.patch
+Patch20: e-smith-samba-1.14.0-setname.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -42,6 +43,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Fri Jan 26 2007 Shad L. Lords <slords@mail.com> 1.14.0-25
+- Set ServerName to SystemName after inital configuration [SME: 543]
+
 * Thu Jan 25 2007 Shad L. Lords <slords@mail.com> 1.14.0-24
 - Allow oplocks to be disabled per ibay [SME: 543]
 - Allow veto oplock files per ibay [SME: 1784]
@@ -956,6 +960,7 @@ Configuration files and templates for the Samba daemon.
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
+%patch20 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
