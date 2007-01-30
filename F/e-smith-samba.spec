@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 25
+%define release 26
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -31,6 +31,7 @@ Patch17: e-smith-samba-1.14.0-shadowcopy.patch2
 Patch18: e-smith-samba-1.14.0-cscpolicy.patch
 Patch19: e-smith-samba-1.14.0-ibayoplocks.patch
 Patch20: e-smith-samba-1.14.0-setname.patch
+Patch21: e-smith-samba-1.14.0-net_full_path.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -43,6 +44,10 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Tue Jan 30 2007 Charlie Brady <charlie_brady@mitel.com> 1.14.0-26
+- Use full path to 'net' command consistently in update-domain-group-maps.
+  [SME: 2400]
+
 * Fri Jan 26 2007 Shad L. Lords <slords@mail.com> 1.14.0-25
 - Set ServerName to SystemName after inital configuration [SME: 543]
 
@@ -961,6 +966,7 @@ Configuration files and templates for the Samba daemon.
 %patch18 -p1
 %patch19 -p1
 %patch20 -p1
+%patch21 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
