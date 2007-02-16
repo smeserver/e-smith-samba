@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 26
+%define release 27
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -32,6 +32,7 @@ Patch18: e-smith-samba-1.14.0-cscpolicy.patch
 Patch19: e-smith-samba-1.14.0-ibayoplocks.patch
 Patch20: e-smith-samba-1.14.0-setname.patch
 Patch21: e-smith-samba-1.14.0-net_full_path.patch
+Patch22: e-smith-samba-1.14.0-runit17.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -44,6 +45,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Fri Feb 16 2007 Shad L. Lords <slords@mail.com> 1.14.0-27
+- Change runsvctrl to sv to support runit v1.7.x
+
 * Tue Jan 30 2007 Charlie Brady <charlie_brady@mitel.com> 1.14.0-26
 - Use full path to 'net' command consistently in update-domain-group-maps.
   [SME: 2400]
@@ -967,6 +971,7 @@ Configuration files and templates for the Samba daemon.
 %patch19 -p1
 %patch20 -p1
 %patch21 -p1
+%patch22 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
