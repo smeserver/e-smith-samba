@@ -46,7 +46,7 @@ AutoReqProv: no
 
 %changelog
 * Fri Feb 16 2007 Shad L. Lords <slords@mail.com> 1.14.0-27
-- Change runsvctrl to sv to support runit v1.7.x
+- Change runsvctrl to sv to support runit v1.7.x [SME: 1179]
 
 * Tue Jan 30 2007 Charlie Brady <charlie_brady@mitel.com> 1.14.0-26
 - Use full path to 'net' command consistently in update-domain-group-maps.
