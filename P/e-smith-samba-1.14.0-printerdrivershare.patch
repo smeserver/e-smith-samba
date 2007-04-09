@@ -1,0 +1,11 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare	2006-03-16 00:01:15.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/61printerdriversshare	2007-04-09 02:06:51.000000000 -0600
+@@ -11,7 +11,6 @@
+ path = /home/e-smith/files/samba/printers
+ guest ok = yes
+ browseable = yes
+-use client driver = $u_c_d
+ writable = $writable
+ HERE
+ 

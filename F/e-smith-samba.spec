@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 27
+%define release 28
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -33,6 +33,7 @@ Patch19: e-smith-samba-1.14.0-ibayoplocks.patch
 Patch20: e-smith-samba-1.14.0-setname.patch
 Patch21: e-smith-samba-1.14.0-net_full_path.patch
 Patch22: e-smith-samba-1.14.0-runit17.patch
+Patch23: e-smith-samba-1.14.0-printerdrivershare.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -45,6 +46,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Mon Apr 9 2007 Stephen Noble <support@dungog.net> 1.14.0-28
+- remove use client driver in smb.conf [SME: 1583]
+
 * Fri Feb 16 2007 Shad L. Lords <slords@mail.com> 1.14.0-27
 - Change runsvctrl to sv to support runit v1.7.x [SME: 1179]
 
@@ -972,6 +976,7 @@ Configuration files and templates for the Samba daemon.
 %patch20 -p1
 %patch21 -p1
 %patch22 -p1
+%patch23 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
