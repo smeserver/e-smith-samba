@@ -1,8 +1,0 @@
-diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/11vetofiles mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/11vetofiles
---- e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/11vetofiles	1970-01-01 10:00:00.000000000 +1000
-+++ mezzanine_patched_e-smith-samba-1.13.2/root/etc/e-smith/templates/etc/smb.conf/11vetofiles	2006-02-17 06:10:34.093442713 +1100
-@@ -0,0 +1,4 @@
-+{
-+
-+}
-+veto files = /.Apple*/:2eDS_Store/:2eTemporaryItems/Icon?*/TheVolumeSettingsFolder/TheFindByContentFolder/Network Trash Folder/Temporary Items/.DS_Store/.bin/
