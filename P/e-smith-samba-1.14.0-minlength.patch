@@ -1,0 +1,5 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11minPasswdLength mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11minPasswdLength
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11minPasswdLength	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11minPasswdLength	2007-06-02 11:56:10.000000000 -0600
+@@ -0,0 +1 @@
++min password length = 7

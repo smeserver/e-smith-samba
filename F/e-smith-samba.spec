@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 28
+%define release 29
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -32,6 +32,7 @@ Patch20: e-smith-samba-1.14.0-setname.patch
 Patch21: e-smith-samba-1.14.0-net_full_path.patch
 Patch22: e-smith-samba-1.14.0-runit17.patch
 Patch23: e-smith-samba-1.14.0-printerdrivershare.patch
+Patch24: e-smith-samba-1.14.0-minlength.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -44,6 +45,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Sat Jun 2 2007 Shad L. Lords <slords@mail.com> 1.14.0-29
+- pam_unix requires passwords >= 6 [SME: 3039]
+
 * Sun Apr 29 2007 Shad L. Lords <slords@mail.com>
 - Clean up spec so package can be built by koji/plague
 
@@ -978,6 +982,7 @@ Configuration files and templates for the Samba daemon.
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
+%patch24 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
