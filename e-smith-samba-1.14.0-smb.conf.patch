@@ -1,0 +1,6 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates.metadata/etc/smb.conf mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates.metadata/etc/smb.conf
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates.metadata/etc/smb.conf	1970-01-01 10:00:00.000000000 +1000
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates.metadata/etc/smb.conf	2006-08-22 08:29:49.366074424 +1000
+@@ -0,0 +1,2 @@
++TEMPLATE_PATH="/etc/smb.conf"
++OUTPUT_FILENAME="/etc/samba/smb.conf"
