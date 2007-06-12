@@ -1,0 +1,12 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/migrate/20smb mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/migrate/20smb
+--- e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/migrate/20smb	2005-07-18 13:39:00.000000000 -0400
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/db/configuration/migrate/20smb	2006-04-18 16:54:43.000000000 -0400
+@@ -1,6 +1,6 @@
+ {
+-    my $smb = $DB->get('smb') ||
+-		$DB->new_record("smb");
++    my $smb = $DB->get('smb');
++    return unless $smb;
+ 
+     my %new_props = ();
+ 

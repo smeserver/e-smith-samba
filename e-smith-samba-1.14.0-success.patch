@@ -1,0 +1,52 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/web/functions/workgroup mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/web/functions/workgroup
+--- e-smith-samba-1.14.0/root/etc/e-smith/web/functions/workgroup	2005-03-17 08:30:25.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/web/functions/workgroup	2007-01-10 08:04:57.000000000 -0700
+@@ -114,7 +114,7 @@
+ 
+ __DATA__
+ <form title="FORM_TITLE" header="/etc/e-smith/web/common/head.tmpl" footer="/etc/e-smith/web/common/foot.tmpl">
+-    <page name="First"  post-event="change_settings()" pre-event="turn_off_buttons()">
++    <page name="First"  post-event="change_settings()" pre-event="print_status_message()">
+       <field type="text" id="Workgroup" value="get_value('Workgroup')"
+ 	     validation="validate_workgroup(), maxlength(15)">
+ 	<label>LABEL_WORKGROUP</label>
+@@ -145,9 +145,4 @@
+       
+       <subroutine src="print_button('SAVE')" />
+     </page>
+-    
+-    <page name="Done" pre-event="turn_off_buttons">
+-      <description>SUCCESS</description>
+-    </page> 
+-
+ </form>
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm mezzanine_patched_e-smith-samba-1.14.0/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm
+--- e-smith-samba-1.14.0/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm	2007-01-10 08:09:10.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm	2007-01-10 08:08:39.000000000 -0700
+@@ -174,11 +174,8 @@
+ 
+ 
+ sub change_settings {
+-    my ($fm) = @_;
+-
+-    my %conf;
+-
+-    my $q = $fm->{'cgi'};
++    my $self = shift;
++    my $q = $self->{'cgi'};
+ 
+     my $RoamingProfiles = ($q->param('RoamingProfiles') || 'no');
+     my $DomainMaster = ($q->param('DomainMaster') || 'yes');
+@@ -189,10 +186,9 @@
+     $db->get('smb')->set_prop("RoamingProfiles", $RoamingProfiles);
+ 
+     system( "/sbin/e-smith/signal-event", "workgroup-update" ) == 0
+-      or die ("Error occurred while updating system configuration.\n");
++      or return $self->error('ERROR_UPDATING');
+     
+-    $fm->{cgi}->param( -name  => 'initial_message', -value => 'CHANGE_SUCCEEDED');
+-    $fm->{cgi}->param( -name => 'wherenext', -value => 'Done' );
++    return $self->success('SUCCESS');
+ }
+ 
+ 

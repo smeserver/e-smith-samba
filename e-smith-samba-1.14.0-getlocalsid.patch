@@ -1,0 +1,18 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps
+--- e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps	2005-03-14 13:48:48.000000000 +1100
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps	2006-06-30 09:51:46.108909344 +1000
+@@ -13,7 +13,13 @@
+ my $a = esmith::AccountsDB->open_ro or die "Couldn't open accounts db\n";
+ 
+ my $g = `net getlocalsid`;
+-$g =~ /SID.*is: (.+)/ or die "Could not get current sid\n";
++unless ($g =~ /SID.*is: (.+)/) {
++    unlink '/etc/samba/secrets.tdb';
++    unlink '/var/cache/samba/gencache.tdb';
++    unlink '/var/cache/samba/wins.dat';
++    $g = `net getlocalsid`;
++    $g =~ /SID.*is: (.+)/ or die "Could not get current sid\n";
++}
+ my $local_sid = $1;
+ 
+ my %mappings = (

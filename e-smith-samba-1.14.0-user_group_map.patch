@@ -1,0 +1,15 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps
+--- e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps	2006-12-01 13:50:55.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps	2006-12-01 13:50:28.000000000 -0700
+@@ -26,8 +26,9 @@
+ 	'Domain Admins' => 'admin',
+ 	'Domain Users' => 'shared',
+ 	'Domain Guests' => 'nobody',
+-    ,
+-    map { $_->prop('Description'), $_->key } $a->groups());
++    (map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->get('admin')),
++    (map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->users()),
++    (map { $_->prop('Description'), $_->key } $a->groups()));
+ 
+ my %mapping_done = ();
+ foreach (`/usr/bin/net groupmap list`)
