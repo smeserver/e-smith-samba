@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 29
+%define release 30
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -45,6 +45,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Thu Jun 2 2007 Shad L. Lords <slords@mail.com> 1.14.0-30
+- revert last change.  Breaks sme8 and is caught by pass check lib.
+
 * Sat Jun 2 2007 Shad L. Lords <slords@mail.com> 1.14.0-29
 - pam_unix requires passwords >= 6 [SME: 3039]
 
@@ -982,7 +985,7 @@ Configuration files and templates for the Samba daemon.
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
-%patch24 -p1
+#%patch24 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
