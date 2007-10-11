@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 30
+%define release 31
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -33,6 +33,7 @@ Patch21: e-smith-samba-1.14.0-net_full_path.patch
 Patch22: e-smith-samba-1.14.0-runit17.patch
 Patch23: e-smith-samba-1.14.0-printerdrivershare.patch
 Patch24: e-smith-samba-1.14.0-minlength.patch
+Patch25: e-smith-samba-1.14.0-printer_tdb_delete.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -45,6 +46,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Wed Oct 10 2007 Charlie Brady <charlie_brady@mitel.com> 1.14.0-31
+- Delete printer tdb file on printer delete. [SME: 3336]
+
 * Thu Jun 2 2007 Shad L. Lords <slords@mail.com> 1.14.0-30
 - revert last change.  Breaks sme8 and is caught by pass check lib.
 
@@ -986,6 +990,7 @@ Configuration files and templates for the Samba daemon.
 %patch22 -p1
 %patch23 -p1
 #%patch24 -p1
+%patch25 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
