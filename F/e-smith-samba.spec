@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 32
+%define release 33
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -35,6 +35,7 @@ Patch23: e-smith-samba-1.14.0-printerdrivershare.patch
 Patch24: e-smith-samba-1.14.0-minlength.patch
 Patch25: e-smith-samba-1.14.0-printer_tdb_delete.patch
 Patch26: e-smith-samba-1.14.0-delete_smbpasswd.patch
+Patch27: e-smith-samba-1.14.0-adminusers.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -47,6 +48,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Fri Oct 26 2007 Shad L. Lords <slords@mail.com> 1.14.0-33
+- Add "Domain Admins" to admin users [SME: 3495]
+
 * Thu Oct 11 2007 Charlie Brady <charlie_brady@mitel.com> 1.14.0-32
 - Delete smbpasswd file prior to restore. [SME: 2313]
 
@@ -996,6 +1000,7 @@ Configuration files and templates for the Samba daemon.
 #%patch24 -p1
 %patch25 -p1
 %patch26 -p1
+%patch27 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
