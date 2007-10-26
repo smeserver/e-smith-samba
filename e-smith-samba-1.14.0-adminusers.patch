@@ -1,0 +1,12 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers	2005-02-18 08:28:18.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers	2007-10-26 07:52:44.000000000 -0600
+@@ -1 +1,7 @@
+-admin users = admin
++{
++    $OUT = "admin users = admin";
++
++    use esmith::AccountsDB;
++    my $adb = esmith::AccountsDB->open_ro();
++    $OUT .= " \@" . $_->key foreach $adb->get_all_by_prop( Description => 'Domain Admins' );
++}
