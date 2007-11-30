@@ -1,0 +1,9 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11printerAdmin mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11printerAdmin
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11printerAdmin	2002-03-12 22:19:39.000000000 +0000
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11printerAdmin	1970-01-01 01:00:00.000000000 +0100
+@@ -1,5 +0,0 @@
+-{
+-# These listed users are printer admins, and can make
+-# changes to printer settings on the server.
+-}
+-printer admin = admin
