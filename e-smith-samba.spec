@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 33
+%define release 34
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -36,6 +36,7 @@ Patch24: e-smith-samba-1.14.0-minlength.patch
 Patch25: e-smith-samba-1.14.0-printer_tdb_delete.patch
 Patch26: e-smith-samba-1.14.0-delete_smbpasswd.patch
 Patch27: e-smith-samba-1.14.0-adminusers.patch
+Patch28: e-smith-samba-1.14.0-RemovePrinterAdminTemplate.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -48,6 +49,9 @@ Requires: samba-common
 AutoReqProv: no
 
 %changelog
+* Fri Nov 30 2007 Gavin Weight <gweight@gmail.com> 1.14.0-34
+- Removed printer admin template. [SME: 3605]
+
 * Fri Oct 26 2007 Shad L. Lords <slords@mail.com> 1.14.0-33
 - Add "Domain Admins" to admin users [SME: 3495]
 
@@ -1001,6 +1005,7 @@ Configuration files and templates for the Samba daemon.
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
+%patch28 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
