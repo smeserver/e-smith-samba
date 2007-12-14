@@ -1,0 +1,58 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/createlinks mezzanine_patched_e-smith-samba-1.14.0/createlinks
+--- e-smith-samba-1.14.0/createlinks	2007-12-14 10:15:20.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/createlinks	2007-12-14 10:15:02.000000000 -0700
+@@ -25,6 +25,13 @@
+ 	));
+ }
+ 
++foreach my $file (qw(
++	/etc/pam.d/samba
++	))
++{
++    templates2events($file, qw(console-save bootstrap-console-save));
++}
++
+ my $event = "console-save";
+ 
+ $event = "bootstrap-console-save";
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/20auth mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/20auth
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/20auth	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/20auth	2007-12-14 10:11:43.000000000 -0700
+@@ -0,0 +1,4 @@
++auth       required	pam_nologin.so
++auth       { -f "/lib/security/pam_pwdb.so" ||
++             -f "/lib64/security/pam_pwdb.so" ? "required     pam_stack.so service=system-auth" :
++                                                "include      system-auth" }
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/30account mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/30account
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/30account	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/30account	2007-12-14 10:10:51.000000000 -0700
+@@ -0,0 +1,3 @@
++account    { -f "/lib/security/pam_pwdb.so" ||
++             -f "/lib64/security/pam_pwdb.so" ? "required     pam_stack.so service=system-auth" :
++                                                "include      system-auth" }
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/40password mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/40password
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/40password	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/40password	2007-12-14 10:10:51.000000000 -0700
+@@ -0,0 +1,3 @@
++password   { -f "/lib/security/pam_pwdb.so" ||
++             -f "/lib64/security/pam_pwdb.so" ? "required     pam_stack.so service=system-auth" :
++                                                "include      system-auth" }
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/50session mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/50session
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/50session	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/50session	2007-12-14 10:11:52.000000000 -0700
+@@ -0,0 +1,3 @@
++session    { -f "/lib/security/pam_pwdb.so" || 
++             -f "/lib64/security/pam_pwdb.so" ? "required     pam_stack.so service=system-auth" : 
++                                                "include      system-auth" }
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/template-begin mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/template-begin
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/template-begin	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/pam.d/samba/template-begin	2007-12-14 10:10:51.000000000 -0700
+@@ -0,0 +1,8 @@
++{
++    $OUT = <<HERE;
++#%PAM-1.0
++HERE
++
++    $OUT .= 
++    Text::Template::_load_text("/etc/e-smith/templates-default/template-begin");
++}
