@@ -1,0 +1,57 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/createlinks mezzanine_patched_e-smith-samba-1.14.0/createlinks
+--- e-smith-samba-1.14.0/createlinks	2007-12-14 09:59:55.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/createlinks	2007-12-14 09:59:34.000000000 -0700
+@@ -14,6 +14,9 @@
+ 	ibay-delete
+ 	ibay-modify
+ 	ibay-modify-servers
++	group-create
++	group-modify
++	group-delete
+ 	network-delete
+ 	network-create
+ 	post-install
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps
+--- e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps	2007-12-14 09:59:55.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/events/actions/update-domain-group-maps	2007-12-14 09:58:27.000000000 -0700
+@@ -31,20 +31,30 @@
+     (map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->users()),
+     (map { $_->prop('Description'), $_->key } $a->groups()));
+ 
++my %ridmap = (
++	'Domain Admins' => '512',
++	'Domain Users' => '513',
++	'Domain Guests' => '514');
++
+ my %mapping_done = ();
+ foreach (`/usr/bin/net groupmap list`)
+ {
+     chomp;
+-    if (/^(.*?) \((S-.*)\) -> (.*)$/)
++    if (/^(.*?) \((S-.*-(\d+))\) -> (.*)$/)
+     {
+-	my ($nt, $sid, $group) = ($1, $2, $3);
++	my ($nt, $sid, $rid, $group) = ($1, $2, $3, $4);
+ 
+ 	# Skip local groups
+ 	next if ($sid =~ /^S-1-5-32-\d+$/);
+ 
+ 	if (exists $mappings{$nt})
+ 	{
+-	    if ($sid =~ /^$local_sid-/)
++	    if ($ridmap{$nt} && $ridmap{$nt} ne $rid)
++	    {
++		# Wrong (old?) sid
++		system('/usr/bin/net','groupmap','delete',"sid=$sid");
++	    }
++	    elsif ($sid =~ /^$local_sid-/)
+ 	    {
+ 		my $ug = $mappings{$nt};
+ 		system('/usr/bin/net',$debug,
+@@ -75,5 +85,6 @@
+ 	    'groupmap','add',
+ 	    "ntgroup=$_",
+ 	    "unixgroup=" . $mappings{$_},
++	    $ridmap{$_} ? "rid=$ridmap{$_}" : (),
+ 	    'type=d');
+ }
