@@ -1,0 +1,24 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/createlinks mezzanine_patched_e-smith-samba-1.14.0/createlinks
+--- e-smith-samba-1.14.0/createlinks	2007-12-14 14:56:57.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/createlinks	2007-12-14 14:56:08.000000000 -0700
+@@ -14,9 +14,6 @@
+ 	ibay-delete
+ 	ibay-modify
+ 	ibay-modify-servers
+-	group-create
+-	group-modify
+-	group-delete
+ 	network-delete
+ 	network-create
+ 	post-install
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers
+--- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers	2007-12-14 14:56:57.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11adminUsers	1969-12-31 17:00:00.000000000 -0700
+@@ -1,7 +0,0 @@
+-{
+-    $OUT = "admin users = admin";
+-
+-    use esmith::AccountsDB;
+-    my $adb = esmith::AccountsDB->open_ro();
+-    $OUT .= " \@" . $_->key foreach $adb->get_all_by_prop( Description => 'Domain Admins' );
+-}

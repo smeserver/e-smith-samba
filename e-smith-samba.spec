@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.0
-%define release 35
+%define release 36
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -39,18 +39,22 @@ Patch27: e-smith-samba-1.14.0-adminusers.patch
 Patch28: e-smith-samba-1.14.0-RemovePrinterAdminTemplate.patch
 Patch29: e-smith-samba-1.14.0-domaingroups.patch
 Patch30: e-smith-samba-1.14.0-sambapam.patch
+Patch31: e-smith-samba-1.14.0-adminuser.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
 Requires: e-smith-lib >= 1.16.0-10
-Requires: samba
-Requires: samba-client
-Requires: samba-common
+Requires: samba >= 3.0.25b
+Requires: samba-client >= 3.0.25b
+Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Fri Dec 14 2007 Shad L. Lords <slords@mail.com> 1.14.0-36
+- admin user no longer needed in 3.0.25 [SME: 3645]
+
 * Fri Dec 14 2007 Shad L. Lords <slords@mail.com> 1.14.0-35
 - Expand smb.conf in group events to complete #33 [SME: 3495]
 - Add rid to groupmap command to fix 3.0.25b groupmap [SME: 3644]
@@ -1015,6 +1019,7 @@ Configuration files and templates for the Samba daemon.
 %patch28 -p1
 %patch29 -p1
 %patch30 -p1
+%patch31 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
