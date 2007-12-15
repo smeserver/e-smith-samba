@@ -1,0 +1,16 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.1/root/etc/e-smith/events/actions/update-domain-group-maps mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/events/actions/update-domain-group-maps
+--- e-smith-samba-1.14.1/root/etc/e-smith/events/actions/update-domain-group-maps	2007-12-15 08:53:09.000000000 -0700
++++ mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/events/actions/update-domain-group-maps	2007-12-15 12:12:29.000000000 -0700
+@@ -27,10 +27,11 @@
+ 	'Domain Admins' => 'admin',
+ 	'Domain Users' => 'shared',
+ 	'Domain Guests' => 'nobody',
+-    (map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->get('admin')),
+     (map { $_->prop('FirstName')." ".$_->prop('LastName'), $_->key } $a->users()),
+     (map { $_->prop('Description'), $_->key } $a->groups()));
+ 
++$mappings{$a->get_prop('admin','FirstName')." ".$a->get_prop('admin','LastName')} = 'admin' unless $mappings{'Domain Admins'} eq 'admin';
++
+ my %ridmap = (
+ 	'Domain Admins' => '512',
+ 	'Domain Users' => '513',
