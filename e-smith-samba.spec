@@ -2,12 +2,13 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.1
-%define release 1
+%define release 2
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
+Patch1: e-smith-samba-1.14.1-admingroup.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -20,6 +21,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sat Dec 15 2007 Shad L. Lords <slords@mail.com> 1.14.1-2
+- Only create admin group if Domain Admins exists [SME: 3646]
+
 * Sat Dec 15 2007 Shad L. Lords <slords@mail.com> 1.14.1-1
 - Roll new tarball and bump version for 3.0.25b version [SME: 3495]
 
@@ -959,6 +963,7 @@ Configuration files and templates for the Samba daemon.
 
 %prep
 %setup
+%patch1 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
