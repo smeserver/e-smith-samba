@@ -1,45 +1,13 @@
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
-%define version 1.14.0
-%define release 36
+%define version 1.14.1
+%define release 1
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch0: e-smith-samba-1.14.0-PrinterAddDelete.patch
-Patch1: e-smith-samba-1.14.0-migrate.patch
-Patch2: e-smith-samba-1.14.0-smbdSFlag.patch 
-Patch3: e-smith-samba-1.14.0-samba-check-password.patch
-Patch4: e-smith-samba-1.14.0-samba-check-password.patch2
-Patch5: e-smith-samba-1.14.0-getlocalsid.patch
-Patch6: e-smith-samba-1.14.0-SMBPorts.patch
-Patch7: e-smith-samba-1.14.0-smb.conf.patch
-Patch8: e-smith-samba-1.14.0-user_group_map.patch
-Patch9: e-smith-samba-1.14.0-getlocalsid.patch2
-Patch10: e-smith-samba-1.14.0-samba-check-password.patch3
-Patch11: e-smith-samba-1.14.0-logondrive.patch
-Patch12: e-smith-samba-1.14.0-tdbbackup.patch
-Patch13: e-smith-samba-1.14.0-vfs_rework.patch
-Patch14: e-smith-samba-1.14.0-workgroupnum.patch
-Patch15: e-smith-samba-1.14.0-success.patch
-Patch16: e-smith-samba-1.14.0-shadowcopy.patch
-Patch17: e-smith-samba-1.14.0-shadowcopy.patch2
-Patch18: e-smith-samba-1.14.0-cscpolicy.patch
-Patch19: e-smith-samba-1.14.0-ibayoplocks.patch
-Patch20: e-smith-samba-1.14.0-setname.patch
-Patch21: e-smith-samba-1.14.0-net_full_path.patch
-Patch22: e-smith-samba-1.14.0-runit17.patch
-Patch23: e-smith-samba-1.14.0-printerdrivershare.patch
-Patch24: e-smith-samba-1.14.0-minlength.patch
-Patch25: e-smith-samba-1.14.0-printer_tdb_delete.patch
-Patch26: e-smith-samba-1.14.0-delete_smbpasswd.patch
-Patch27: e-smith-samba-1.14.0-adminusers.patch
-Patch28: e-smith-samba-1.14.0-RemovePrinterAdminTemplate.patch
-Patch29: e-smith-samba-1.14.0-domaingroups.patch
-Patch30: e-smith-samba-1.14.0-sambapam.patch
-Patch31: e-smith-samba-1.14.0-adminuser.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -52,6 +20,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sat Dec 15 2007 Shad L. Lords <slords@mail.com> 1.14.1-1
+- Roll new tarball and bump version for 3.0.25b version [SME: 3495]
+
 * Fri Dec 14 2007 Shad L. Lords <slords@mail.com> 1.14.0-36
 - admin user no longer needed in 3.0.25 [SME: 3645]
 
@@ -988,38 +959,6 @@ Configuration files and templates for the Samba daemon.
 
 %prep
 %setup
-%patch0 -p1 
-%patch1 -p1 
-%patch2 -p1 
-%patch3 -p1 
-%patch4 -p1 
-%patch5 -p1 
-%patch6 -p1 
-%patch7 -p1 
-%patch8 -p1 
-%patch9 -p1 
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
-%patch20 -p1
-%patch21 -p1
-%patch22 -p1
-%patch23 -p1
-#%patch24 -p1
-%patch25 -p1
-%patch26 -p1
-%patch27 -p1
-%patch28 -p1
-%patch29 -p1
-%patch30 -p1
-%patch31 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
