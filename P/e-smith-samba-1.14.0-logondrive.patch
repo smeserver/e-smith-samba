@@ -1,8 +1,0 @@
-diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11logonDrive mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11logonDrive
---- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11logonDrive	1969-12-31 17:00:00.000000000 -0700
-+++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11logonDrive	2007-01-03 13:09:41.000000000 -0700
-@@ -0,0 +1,4 @@
-+{
-+    $drive = $smb{LogonDrive} || 'Z';
-+    return "logon drive = ${drive}:";
-+}

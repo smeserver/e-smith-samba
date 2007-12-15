@@ -1,9 +1,0 @@
-diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11smbPorts mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11smbPorts
---- e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11smbPorts	1970-01-01 10:00:00.000000000 +1000
-+++ mezzanine_patched_e-smith-samba-1.14.0/root/etc/e-smith/templates/etc/smb.conf/11smbPorts	2006-07-18 09:10:50.106823200 +1000
-@@ -0,0 +1,5 @@
-+{
-+   my $smb_ports = $smb{SMBPorts} || 139;
-+
-+   "smb ports = $smb_ports";
-+}
