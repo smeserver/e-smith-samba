@@ -2,13 +2,14 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.1
-%define release 2
+%define release 3
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 Patch1: e-smith-samba-1.14.1-admingroup.patch
+Patch2: e-smith-samba-1.14.1-browsable.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -21,6 +22,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Wed Jan 09 2008 Stephen Noble <support@dungog.net> 1.14.1-3
+- Allow browsable to be disabled per ibay [SME: 2966]
+
 * Sat Dec 15 2007 Shad L. Lords <slords@mail.com> 1.14.1-2
 - Only create admin group if Domain Admins exists [SME: 3646]
 
@@ -964,6 +968,7 @@ Configuration files and templates for the Samba daemon.
 %prep
 %setup
 %patch1 -p1
+%patch2 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
