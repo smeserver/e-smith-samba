@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.1
-%define release 3
+%define release 4
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -10,18 +10,24 @@ Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 Patch1: e-smith-samba-1.14.1-admingroup.patch
 Patch2: e-smith-samba-1.14.1-browsable.patch
+Patch3: e-smith-samba-1.14.1-tags2general.patch
+
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
 Requires: e-smith-lib >= 1.16.0-10
+Requires: e-smith-formmagick >= 1.4.0-9
 Requires: samba >= 3.0.25b
 Requires: samba-client >= 3.0.25b
 Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Wed Feb 13 2008 Stephen Noble <support@dungog.net> 1.14.1-4
+- Remove <base> tags now in general [SME: 3925]
+
 * Wed Jan 09 2008 Stephen Noble <support@dungog.net> 1.14.1-3
 - Allow browsable to be disabled per ibay [SME: 2966]
 
@@ -969,6 +975,7 @@ Configuration files and templates for the Samba daemon.
 %setup
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

@@ -1,0 +1,33 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.1/root/etc/e-smith/locale/en-us/etc/e-smith/web/functions/workgroup mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/locale/en-us/etc/e-smith/web/functions/workgroup
+--- e-smith-samba-1.14.1/root/etc/e-smith/locale/en-us/etc/e-smith/web/functions/workgroup	2003-05-22 02:05:41.000000000 +1000
++++ mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/locale/en-us/etc/e-smith/web/functions/workgroup	2008-02-13 22:15:34.000000000 +1100
+@@ -53,14 +53,6 @@
+         <trans>Roaming profiles</trans>
+     </entry>
+     <entry>
+-        <base>YES</base>
+-        <trans>Yes</trans>
+-    </entry>
+-    <entry>
+-        <base>NO</base>
+-        <trans>No</trans>
+-    </entry>
+-    <entry>
+         <base>SUCCESS</base>
+         <trans>
+             The new workgroup settings have been saved
+@@ -87,14 +79,6 @@
+         </trans>
+     </entry>
+     <entry>
+-        <base>SAVE</base>
+-        <trans>Save</trans>
+-    </entry>
+-    <entry>
+-        <base>Configuration</base>
+-        <trans>Configuration</trans>
+-    </entry>
+-    <entry>
+         <base>Workgroup</base>
+         <trans>Workgroup</trans>
+     </entry>
