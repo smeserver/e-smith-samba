@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.1
-%define release 4
+%define release 5
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -11,7 +11,7 @@ Source: %{name}-%{version}.tar.gz
 Patch1: e-smith-samba-1.14.1-admingroup.patch
 Patch2: e-smith-samba-1.14.1-browsable.patch
 Patch3: e-smith-samba-1.14.1-tags2general.patch
-
+Patch4: e-smith-samba-1.14.1-shadowfix.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -25,6 +25,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Thu Mar 13 2008 Shad L. Lords <slords@mail.com> 1.14.1-5
+- Fix shadowcopy with < 2 ibays/users [SME: 3862]
+
 * Wed Feb 13 2008 Stephen Noble <support@dungog.net> 1.14.1-4
 - Remove <base> tags now in general [SME: 3925]
 
@@ -976,6 +979,7 @@ Configuration files and templates for the Samba daemon.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
