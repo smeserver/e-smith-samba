@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.1
-%define release 5
+%define release 6
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -12,6 +12,7 @@ Patch1: e-smith-samba-1.14.1-admingroup.patch
 Patch2: e-smith-samba-1.14.1-browsable.patch
 Patch3: e-smith-samba-1.14.1-tags2general.patch
 Patch4: e-smith-samba-1.14.1-shadowfix.patch
+Patch5: e-smith-samba-1.14.1-hideprofile.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -25,6 +26,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Fri Mar 21 2008 Shad L. Lords <slords@mail.com> 1.14.1-6
+- Hide normally hidden profile files [SME: 4082]
+
 * Thu Mar 13 2008 Shad L. Lords <slords@mail.com> 1.14.1-5
 - Fix shadowcopy with < 2 ibays/users [SME: 3862]
 
@@ -980,6 +984,7 @@ Configuration files and templates for the Samba daemon.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
