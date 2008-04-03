@@ -283,3 +283,7 @@ Fri Mar 21 11:37:08 2008                        Shad L. Lords (slords)
 
 See changelog
 ----------------------------------------------------------------------
+Thu Apr  3 10:45:06 2008                      Charlie Brady (charlieb)
+
+disable unix extensions in smb.conf
+----------------------------------------------------------------------

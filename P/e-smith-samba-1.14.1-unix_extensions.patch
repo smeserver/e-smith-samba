@@ -1,0 +1,15 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11unix_extensions mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11unix_extensions
+--- e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11unix_extensions	1969-12-31 19:00:00.000000000 -0500
++++ mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11unix_extensions	2008-04-03 10:42:54.000000000 -0400
+@@ -0,0 +1,11 @@
++{
++#             This boolean parameter controls whether Samba implments  the  CIFS  UNIX  extensions,  as
++#             defined  by  HP.  These extensions enable Samba to better serve UNIX CIFS clients by sup-
++#             porting features such as symbolic links, hard links, etc... These  extensions  require  a
++#             similarly enabled client, and are of no current use to Windows clients.
++
++# Enabling unix extensions causes a lot of problems with file and directory
++# permissions in i-bays (reported with OS X clients). We disable them.
++
++    $OUT .= "unix extensions = no";
++}
