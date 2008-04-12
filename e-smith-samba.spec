@@ -2,7 +2,7 @@ Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 1.14.1
-%define release 6
+%define release 7
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -13,6 +13,7 @@ Patch2: e-smith-samba-1.14.1-browsable.patch
 Patch3: e-smith-samba-1.14.1-tags2general.patch
 Patch4: e-smith-samba-1.14.1-shadowfix.patch
 Patch5: e-smith-samba-1.14.1-hideprofile.patch
+Patch6: e-smith-samba-1.14.1-unix_extensions.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -26,6 +27,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Thu Apr  3 2008 Charlie Brady <charlieb@e-smith.com> 1.14.1-7
+- Disable unix extensions. [SME: 4164]
+
 * Fri Mar 21 2008 Shad L. Lords <slords@mail.com> 1.14.1-6
 - Hide normally hidden profile files [SME: 4082]
 
@@ -985,6 +989,7 @@ Configuration files and templates for the Samba daemon.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
