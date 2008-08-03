@@ -1,0 +1,10 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11osLevel mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11osLevel
+--- e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11osLevel	2005-02-18 00:04:02.000000000 +0100
++++ mezzanine_patched_e-smith-samba-1.14.1/root/etc/e-smith/templates/etc/smb.conf/11osLevel	2008-08-03 11:23:45.000000000 +0200
+@@ -7,5 +7,5 @@
+ 
+     my $os_level = $smb{OsLevel} || "65";
+ 
+-    "os level = ${os_level}";
++    "os level = $os_level";
+ }
