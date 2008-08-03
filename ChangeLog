@@ -287,3 +287,8 @@ Thu Apr  3 10:45:06 2008                      Charlie Brady (charlieb)
 
 disable unix extensions in smb.conf
 ----------------------------------------------------------------------
+Sun Aug  3 11:27:26 2008                                    smebuilder
+
+* Sun Aug  3 2008 Jonathan Martens <smeserver-contribs@snetram.nl> 1.14.1-8
+- Fix oslevel template expansion. [SME: 4470]
+----------------------------------------------------------------------
