@@ -1,20 +1,15 @@
+# $Id: e-smith-samba.spec,v 1.17 2008/10/07 19:19:52 slords Exp $
+
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
-%define version 1.14.1
-%define release 8
+%define version 2.0.0
+%define release 1
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch1: e-smith-samba-1.14.1-admingroup.patch
-Patch2: e-smith-samba-1.14.1-browsable.patch
-Patch3: e-smith-samba-1.14.1-tags2general.patch
-Patch4: e-smith-samba-1.14.1-shadowfix.patch
-Patch5: e-smith-samba-1.14.1-hideprofile.patch
-Patch6: e-smith-samba-1.14.1-unix_extensions.patch
-Patch7: e-smith-samba-1.14.1-osLevel.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -28,6 +23,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Tue Oct 7 2008 Shad L. Lords <slords@mail.com> 2.0.0-1.sme
+- Roll new stream to separate sme7/sme8 trees [SME: 4633]
+
 * Sun Aug  3 2008 Jonathan Martens <smeserver-contribs@snetram.nl> 1.14.1-8
 - Fix oslevel template expansion. [SME: 4470]
 
@@ -988,13 +986,6 @@ Configuration files and templates for the Samba daemon.
 
 %prep
 %setup
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
