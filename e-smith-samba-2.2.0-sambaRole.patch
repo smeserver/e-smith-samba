@@ -1,0 +1,273 @@
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/defaults/smb/DomainMaster e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/defaults/smb/DomainMaster
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/defaults/smb/DomainMaster	2005-02-17 15:11:34.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/defaults/smb/DomainMaster	1969-12-31 17:00:00.000000000 -0700
+@@ -1 +0,0 @@
+-no
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/defaults/smb/OsLevel e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/defaults/smb/OsLevel
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/defaults/smb/OsLevel	1969-12-31 17:00:00.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/defaults/smb/OsLevel	2008-10-13 15:17:03.000000000 -0600
+@@ -0,0 +1 @@
++35
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/defaults/smb/ServerRole e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/defaults/smb/ServerRole
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/defaults/smb/ServerRole	1969-12-31 17:00:00.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/defaults/smb/ServerRole	2008-10-13 15:17:03.000000000 -0600
+@@ -0,0 +1 @@
++WS
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/migrate/20smb e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/migrate/20smb
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/db/configuration/migrate/20smb	2007-12-15 08:53:08.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/db/configuration/migrate/20smb	2008-10-13 15:17:03.000000000 -0600
+@@ -4,7 +4,7 @@
+ 
+     my %new_props = ();
+ 
+-    foreach my $prop (qw(DomainMaster RoamingProfiles ServerName Workgroup))
++    foreach my $prop (qw(RoamingProfiles ServerName Workgroup))
+     {
+ 	my $old = $DB->get("Samba$prop");
+ 	if (defined $old)
+@@ -14,6 +14,16 @@
+ 	}
+     }
+ 
++    foreach my $prop (qw(DomainMaster SambaDomainMaster))
++    {
++	my $old = $DB->get($prop);
++	if (defined $old)
++	{
++	    $new_props{ServerRole} = 'PDC' unless $old eq 'no';
++	    $old->delete;
++	}
++    }
++
+     ###Migrage CharacterSet->DisplayCharSet
+     my $CharacterSet = $smb->prop('CharacterSet');
+     if ($CharacterSet)
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/02setupDomainMaster e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/02setupDomainMaster
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/02setupDomainMaster	2003-06-18 14:32:48.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/02setupDomainMaster	1969-12-31 17:00:00.000000000 -0700
+@@ -1,5 +0,0 @@
+-{
+-    $SMB_DomainMaster = $smb{DomainMaster} || "no";
+-
+-    "";
+-}
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11domainLogons e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11domainLogons
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11domainLogons	2003-06-18 14:32:48.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11domainLogons	2008-10-13 15:17:03.000000000 -0600
+@@ -1,3 +1,3 @@
+ {
+-   "domain logons = " . $SMB_DomainMaster;
++   "domain logons = " . ( $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$} ? "yes" : "no" );
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11domainMaster e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11domainMaster
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11domainMaster	2003-06-18 14:32:48.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11domainMaster	2008-10-13 15:17:03.000000000 -0600
+@@ -1,13 +1,3 @@
+ {
+-   # If there is a WINSServer set and it is not this system, we 
+-   # shouldn't be domain master, even if we're configured to be.
+-
+-   my $domainMaster = $SMB_DomainMaster;
+-
+-   if (defined $SMB_WINSServer)
+-   {
+-       $domainMaster = 'no' unless ($SMB_WINSServer eq $LocalIP);
+-   }
+-
+-   return "domain master = $domainMaster";
++   "domain master = " . ( $smb{ServerRole} =~ m{^(PDC|ADS)$} ? "yes" : "no" );
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11logonHome e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11logonHome
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11logonHome	2005-02-17 16:04:02.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11logonHome	2008-10-13 15:17:03.000000000 -0600
+@@ -6,7 +6,7 @@
+ # WinNT/W2K uses logon path
+ # Win9x uses logon home
+ 
+-    return "" unless ($SMB_DomainMaster eq "yes");
++    return "" unless $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$};
+     
+     my $roamingProfiles = $smb{RoamingProfiles} || "no";  
+   
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11logonPath e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11logonPath
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11logonPath	2005-02-17 16:04:02.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11logonPath	2008-10-13 15:17:03.000000000 -0600
+@@ -6,7 +6,7 @@
+ # WinNT/W2K uses logon path
+ # Win9x uses logon home
+ 
+-    return "" unless ($SMB_DomainMaster eq "yes");
++    return "" unless $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$};
+ 
+     my $roamingProfiles = $smb{RoamingProfiles} || "no";
+ 
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11logonScript e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11logonScript
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11logonScript	2003-06-18 14:32:48.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11logonScript	2008-10-13 15:17:03.000000000 -0600
+@@ -6,7 +6,7 @@
+ # run a specific logon batch file per username
+ # ; logon script = %U.bat\n\n";
+ 
+-    return "" unless ($SMB_DomainMaster eq "yes");
++    return "" unless $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$};
+ 
+     'logon script = netlogon.bat';
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11osLevel e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11osLevel
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11osLevel	2008-10-07 11:37:32.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11osLevel	2008-10-13 15:17:03.000000000 -0600
+@@ -3,9 +3,7 @@
+ # elections. The default value should be reasonable
+ #   os level = 33
+ 
+-    return "" unless ($SMB_DomainMaster eq "yes");
+-
+     my $os_level = $smb{OsLevel} || "65";
+ 
+-    "os level = $os_level";
++    "os level = " . ( $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$} ? $os_level : "65" );
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11passwordServer e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11passwordServer
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11passwordServer	2002-03-12 15:19:39.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11passwordServer	2008-10-13 15:17:03.000000000 -0600
+@@ -1,4 +1,7 @@
+ {
+ # Use password server option only with security = server
+ # ;   password server = <NT-Server-Name>
++    return "" unless $smb{ServerRole} =~ m{^(DM|ADM)$};
++
++   return "password server = $SMB_WINSServer";
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11preferredMaster e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11preferredMaster
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11preferredMaster	1969-12-31 17:00:00.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11preferredMaster	2008-10-13 15:17:03.000000000 -0600
+@@ -0,0 +1,3 @@
++{
++   "preferred master = " . ( $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$} ? "yes" : "auto" );
++}
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11remoteAnnounce e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteAnnounce
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11remoteAnnounce	2002-03-12 15:19:38.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteAnnounce	2008-10-13 15:17:03.000000000 -0600
+@@ -1,4 +1,7 @@
+ {
+ # Cause this host to announce itself to local subnets here
+ # ;   remote announce = 192.168.1.255 192.168.2.44
++    return "" if $SMB_WINSServer eq $LocalIP;
++    
++    return "remote announce = $SMB_WINSServer";
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11remoteBrowseSync e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteBrowseSync
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11remoteBrowseSync	2002-03-12 15:19:38.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteBrowseSync	2008-10-13 15:17:03.000000000 -0600
+@@ -3,4 +3,7 @@
+ #  request announcement to, or browse list sync from:
+ #	a specific host or from / to a whole subnet (see below)
+ # ;   remote browse sync = 192.168.3.25 192.168.5.255
++    return "" if $SMB_WINSServer eq $LocalIP;
++    
++    return "remote browse sync = $SMB_WINSServer";
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11security e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11security
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11security	2002-03-12 15:19:38.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11security	2008-10-13 15:17:03.000000000 -0600
+@@ -2,4 +2,12 @@
+ # Security mode. Most people will want user level security. See
+ # security_level.txt for details.
+ }
+-security = user
++security = {
++    if ($smb{ServerRole} eq "DM") {
++        "domain";
++    } elsif ($smb{ServerRole} eq "ADS") {
++        "ADS";
++    } else {
++        "user";
++    }
++}
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11winsServer e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11winsServer
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11winsServer	2003-07-02 15:23:35.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11winsServer	2008-10-13 15:18:22.000000000 -0600
+@@ -6,9 +6,8 @@
+     # WINS Support - Tells the NMBD component of Samba to enable its WINS Server
+     # WINS Server - Tells the NMBD components of Samba to be a WINS Client
+     #------------------------------------------------------------------
+-    return "wins support = no" unless (defined $SMB_WINSServer);
++    return "wins support = yes" if $SMB_WINSServer eq $LocalIP;
+     
+-    return "wins support = yes" if ($SMB_DomainMaster eq 'yes');
+-
+-    return "wins server = $SMB_WINSServer";
++    $OUT .= "wins support = no\n";
++    $OUT .= "wins server = $SMB_WINSServer";
+ }
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/61netlogonshare e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/61netlogonshare
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/61netlogonshare	2003-06-18 14:32:48.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/61netlogonshare	2008-10-13 15:17:56.000000000 -0600
+@@ -1,5 +1,5 @@
+ {
+-    return "" unless ($SMB_DomainMaster eq "yes");
++    return "" unless $smb{ServerRole} =~ m{^(PDC|ADS|BDC)$};
+ 
+     $OUT .= <<HERE;
+ [netlogon]
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/web/functions/workgroup e-smith-samba-2.0.0/root/etc/e-smith/web/functions/workgroup
+--- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/web/functions/workgroup	2007-12-15 08:53:08.000000000 -0700
++++ e-smith-samba-2.0.0/root/etc/e-smith/web/functions/workgroup	2008-10-13 15:17:03.000000000 -0600
+@@ -69,8 +69,8 @@
+     'Finding the Samba RoamingProfiles field');
+ ok ($ua->{form}->find_input('ServerName'),
+     'Finding the Samba ServerName field');
+-ok ($ua->{form}->find_input('DomainMaster'),
+-    'Finding the Samba DomainMaster field');
++ok ($ua->{form}->find_input('ServerRole'),
++    'Finding the Samba ServerRole field');
+ 
+ SKIP: {
+     skip 7, "Unsafe!" unless destruction_ok();
+@@ -78,7 +78,7 @@
+     $ua->field('Workgroup' => 'foo');
+     $ua->field('RoamingProfiles' => 'yes');
+     $ua->field('ServerName' => 'Blah');
+-    $ua->field('DomainMaster' => 'yes');
++    $ua->field('ServerRole' => 'PDC');
+ 
+ 
+     ok  ($ua->click("Save"),                "Click Save");
+@@ -91,7 +91,7 @@
+     is ($db->get('smb')->value('Workgroup'), 'foo', 'Validated value for Samba Workgroup');
+     is ($db->get('smb')->prop('RoamingProfiles'), 'yes', 'Validated value for Samba RoamingProfiles');
+     is ($db->get('smb')->prop('ServerName'), 'Blah', 'Validated value for Samba ServerName');
+-    is ($db->get('smb')->prop('DomainMaster'), 'yes', 'Validated value for Samba DomainMaster');
++    is ($db->get('smb')->prop('ServerRole'), 'PDC', 'Validated value for Samba ServerRole');
+ }
+ 
+ ok  ($ua->get_panel($panel),            "Testing panel retrieval");
+@@ -127,9 +127,9 @@
+ 	<description>DESC_SERVERNAME</description>
+       </field>
+       <field type="select" 
+-	     id="DomainMaster" 
+-	     options="'yes' => 'YES', 'no' => 'NO'" 
+-	     value="get_value('DomainMaster')">
++	     id="ServerRole" 
++	     options="'PDC' => 'YES', 'WS' => 'NO'" 
++	     value="get_value('ServerRole')">
+ 	<label>LABEL_PDC</label>
+ 	<description>DESC_PDC</description>
+       </field>
+diff -ruN e-smith-samba-2.0.0.sambaRole/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm e-smith-samba-2.0.0/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm
+--- e-smith-samba-2.0.0.sambaRole/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm	2007-12-15 08:53:08.000000000 -0700
++++ e-smith-samba-2.0.0/root/usr/lib/perl5/site_perl/esmith/FormMagick/Panel/workgroup.pm	2008-10-13 15:17:03.000000000 -0600
+@@ -178,10 +178,10 @@
+     my $q = $self->{'cgi'};
+ 
+     my $RoamingProfiles = ($q->param('RoamingProfiles') || 'no');
+-    my $DomainMaster = ($q->param('DomainMaster') || 'yes');
++    my $ServerRole = ($q->param('ServerRole') || 'WS');
+ 
+     $db->get('smb')->set_prop('Workgroup', $q->param('Workgroup'));
+-    $db->get('smb')->set_prop('DomainMaster', $DomainMaster);
++    $db->get('smb')->set_prop('ServerRole', $ServerRole);
+     $db->get('smb')->set_prop('ServerName', $q->param('ServerName'));
+     $db->get('smb')->set_prop("RoamingProfiles", $RoamingProfiles);
+ 

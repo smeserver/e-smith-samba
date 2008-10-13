@@ -1,21 +1,22 @@
-# $Id: e-smith-samba.spec,v 1.17 2008/10/07 19:19:52 slords Exp $
+# $Id: e-smith-samba.spec,v 1.18 2008/10/13 21:48:33 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 1
+%define release 2
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
+Patch1: e-smith-samba-2.0.0-sambaRole.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
 BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
-Requires: e-smith-lib >= 1.16.0-10
+Requires: e-smith-lib >= 2.2.0-2
 Requires: e-smith-formmagick >= 1.4.0-9
 Requires: samba >= 3.0.25b
 Requires: samba-client >= 3.0.25b
@@ -23,6 +24,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Mon Oct 13 2008 Shad L. Lords <slords@mail.com> 2.2.0-2.sme
+- Add patch to support multiple samba roles [SME: 4172]
+
 * Tue Oct 7 2008 Shad L. Lords <slords@mail.com> 2.2.0-1.sme
 - Roll new stream to separate sme7/sme8 trees [SME: 4633]
 
@@ -986,6 +990,7 @@ Configuration files and templates for the Samba daemon.
 
 %prep
 %setup
+%patch1 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
