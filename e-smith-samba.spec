@@ -1,4 +1,4 @@
-# $Id: e-smith-samba.spec,v 1.18 2008/10/13 21:48:33 slords Exp $
+# $Id: e-smith-samba.spec,v 1.19 2008/10/13 21:50:37 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
@@ -10,7 +10,7 @@ Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch1: e-smith-samba-2.0.0-sambaRole.patch
+Patch1: e-smith-samba-2.2.0-sambaRole.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
