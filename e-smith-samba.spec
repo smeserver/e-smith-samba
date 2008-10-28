@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.18 2008/10/13 21:48:33 slords Exp $
+# $Id: e-smith-samba.spec,v 1.19 2008/10/28 23:12:19 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.0.0
-%define release 2
+%define release 3
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -24,6 +24,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Tue Oct 28 2008 Shad L. Lords <slords@mail.com> 2.0.0-3.sme
+- Fix oslevel fragment for server roles [SME: 4730]
+
 * Mon Oct 13 2008 Shad L. Lords <slords@mail.com> 2.0.0-2.sme
 - Add patch to support multiple samba roles [SME: 4172]
 
