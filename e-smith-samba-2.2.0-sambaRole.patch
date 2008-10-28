@@ -125,7 +125,7 @@ diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/
      my $os_level = $smb{OsLevel} || "65";
  
 -    "os level = $os_level";
-+    "os level = " . ( $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$} ? $os_level : "65" );
++    "os level = " . ( $smb{ServerRole} =~ m{^(PDC|BDC|ADS)$} ? "65" : $os_level );
  }
 diff -ruN e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11passwordServer e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11passwordServer
 --- e-smith-samba-2.0.0.sambaRole/root/etc/e-smith/templates/etc/smb.conf/11passwordServer	2002-03-12 15:19:39.000000000 -0700
