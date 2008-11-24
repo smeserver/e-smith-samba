@@ -1,16 +1,17 @@
-# $Id: e-smith-samba.spec,v 1.19 2008/10/28 23:12:19 slords Exp $
+# $Id: e-smith-samba.spec,v 1.20 2008/11/24 02:32:18 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.0.0
-%define release 3
+%define release 4
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 Patch1: e-smith-samba-2.0.0-sambaRole.patch
+Patch2: e-smith-samba-2.0.0-migratefix.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -24,6 +25,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sun Nov 23 2008 Shad L. Lords <slords@mail.com> 2.0.0-4.sme
+- Fix migrate fragments for samba [SME: 4777]
+
 * Tue Oct 28 2008 Shad L. Lords <slords@mail.com> 2.0.0-3.sme
 - Fix oslevel fragment for server roles [SME: 4730]
 
@@ -994,6 +998,7 @@ Configuration files and templates for the Samba daemon.
 %prep
 %setup
 %patch1 -p1
+%patch2 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

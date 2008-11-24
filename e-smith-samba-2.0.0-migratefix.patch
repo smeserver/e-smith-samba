@@ -1,0 +1,41 @@
+--- e-smith-samba-2.2.0/root/etc/e-smith/db/configuration/migrate/20smb.migratefix	2008-11-23 19:24:10.000000000 -0700
++++ e-smith-samba-2.2.0/root/etc/e-smith/db/configuration/migrate/20smb	2008-11-23 19:28:10.000000000 -0700
+@@ -14,9 +14,9 @@
+ 	}
+     }
+ 
+-    foreach my $prop (qw(DomainMaster SambaDomainMaster))
++    foreach my $prop (qw(DomainMaster))
+     {
+-	my $old = $DB->get($prop);
++	my $old = $DB->get("Samba$prop");
+ 	if (defined $old)
+ 	{
+ 	    $new_props{ServerRole} = 'PDC' unless $old eq 'no';
+@@ -24,6 +24,16 @@
+ 	}
+     }
+ 
++    foreach my $prop (qw(DomainMaster))
++    {
++	my $old = $smb->prop($prop);
++	if (defined $old)
++	{
++	    $new_props{ServerRole} = 'PDC' unless $old eq 'no';
++	    $smb->delete_prop($prop);
++	}
++    }
++
+     ###Migrage CharacterSet->DisplayCharSet
+     my $CharacterSet = $smb->prop('CharacterSet');
+     if ($CharacterSet)
+--- e-smith-samba-2.2.0/root/etc/e-smith/db/configuration/migrate/30smbServerName.migratefix	2007-12-15 08:53:09.000000000 -0700
++++ e-smith-samba-2.2.0/root/etc/e-smith/db/configuration/migrate/30smbServerName	2008-11-23 19:27:43.000000000 -0700
+@@ -3,6 +3,6 @@
+     my $srvName = $smb->prop('ServerName') || 'e-smith-server';
+     my $sysName = $DB->get('SystemName') || return;
+ 
+-    return unless $srvName =~ m#(mitel-networks|e-smith)-server#;
++    return unless $srvName =~ m#mitel-networks|mitel-networks-server|mitel-server|e-smith-server#;
+     $smb->set_prop('ServerName', $sysName->value);
+ }
