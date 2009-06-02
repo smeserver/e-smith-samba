@@ -1,0 +1,35 @@
+--- e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteAnnounce.fixwarnings	2009-06-02 07:46:56.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteAnnounce	2009-06-02 07:48:58.000000000 -0600
+@@ -1,7 +1,7 @@
+ {
+ # Cause this host to announce itself to local subnets here
+ # ;   remote announce = 192.168.1.255 192.168.2.44
+-    return "" if $SMB_WINSServer eq $LocalIP;
++    return "" unless defined $SMB_WINSServer and $SMB_WINSServer ne $LocalIP;
+     
+     return "remote announce = $SMB_WINSServer";
+ }
+--- e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteBrowseSync.fixwarnings	2009-06-02 07:46:56.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11remoteBrowseSync	2009-06-02 07:49:13.000000000 -0600
+@@ -3,7 +3,7 @@
+ #  request announcement to, or browse list sync from:
+ #	a specific host or from / to a whole subnet (see below)
+ # ;   remote browse sync = 192.168.3.25 192.168.5.255
+-    return "" if $SMB_WINSServer eq $LocalIP;
++    return "" unless defined $SMB_WINSServer and $SMB_WINSServer ne $LocalIP;
+     
+     return "remote browse sync = $SMB_WINSServer";
+ }
+--- e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11winsServer.fixwarnings	2009-06-02 07:46:56.000000000 -0600
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11winsServer	2009-06-02 07:51:05.000000000 -0600
+@@ -6,8 +6,8 @@
+     # WINS Support - Tells the NMBD component of Samba to enable its WINS Server
+     # WINS Server - Tells the NMBD components of Samba to be a WINS Client
+     #------------------------------------------------------------------
+-    return "wins support = yes" if $SMB_WINSServer eq $LocalIP;
++    return "wins support = yes" if defined $SMB_WINSServer and $SMB_WINSServer eq $LocalIP;
+     
+     $OUT .= "wins support = no\n";
+-    $OUT .= "wins server = $SMB_WINSServer";
++    $OUT .= "wins server = $SMB_WINSServer" if defined $SMB_WINSServer;
+ }
