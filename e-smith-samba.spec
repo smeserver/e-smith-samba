@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.22 2009/06/02 13:58:27 slords Exp $
+# $Id: e-smith-samba.spec,v 1.23 2009/12/26 08:54:02 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 5
+%define release 6
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -13,6 +13,7 @@ Source: %{name}-%{version}.tar.gz
 Patch1: e-smith-samba-2.2.0-sambaRole.patch
 Patch2: e-smith-samba-2.2.0-migratefix.patch
 Patch3: e-smith-samba-2.2.0-fixwarnings.patch
+Patch4: e-smith-samba-2.2.0-win7samba.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -26,6 +27,10 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sat Dec 26 2009 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-6.sme
+- Add registry file to server-resources to allow windows 7 to 
+  join Samba 3.x domains [SME: 5425]
+
 * Tue Jun 2 2009 Shad L. Lords <slords@mail.com> 2.2.0-5.sme
 - Fix warnings in template expansion [SME: 5309]
 
@@ -1004,6 +1009,7 @@ Configuration files and templates for the Samba daemon.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
