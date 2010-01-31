@@ -1,4 +1,4 @@
-# $Id: e-smith-samba.spec,v 1.25 2010/01/31 09:49:34 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.26 2010/01/31 10:00:15 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
@@ -33,7 +33,7 @@ AutoReqProv: no
 - Enable bindinterfaces by default [SME: 3325]
 
 * Sun Jan 31 2010 Stephen Noble <support@dungog.net> 2.2.0-7.sme
-- Set recyle bin permissions [SME: 5600]
+- Set recyle bin permissions [SME: 1734]
 
 * Sat Dec 26 2009 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-6.sme
 - Add registry file to server-resources to allow windows 7 to 
