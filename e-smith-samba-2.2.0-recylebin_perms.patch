@@ -1,0 +1,9 @@
+diff -urN e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin e-smith-samba-2.2.0.new/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin	2007-12-16 02:53:08.000000000 +1100
++++ e-smith-samba-2.2.0.new/root/etc/e-smith/templates/etc/smb.conf/ibays/10recyclebin	2010-01-31 18:13:38.000000000 +1100
+@@ -8,4 +8,5 @@
+     $ibay_vfs->{recycle}->{touch} = "True";
+     $ibay_vfs->{recycle}->{exclude} = "*.tmp|*.temp|*.o|*.obj|~\$*";
+     $ibay_vfs->{recycle}->{exclude_dir} = "/tmp|/temp|/cache";
++    $ibay_vfs->{recycle}->{directory_mode} = "0770";
+ }
