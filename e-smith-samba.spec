@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.24 2010/01/31 07:19:49 dungog Exp $
+# $Id: e-smith-samba.spec,v 1.25 2010/01/31 09:49:34 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 7
+%define release 8
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -15,6 +15,7 @@ Patch2: e-smith-samba-2.2.0-migratefix.patch
 Patch3: e-smith-samba-2.2.0-fixwarnings.patch
 Patch4: e-smith-samba-2.2.0-win7samba.patch
 Patch5: e-smith-samba-2.2.0-recylebin_perms.patch
+Patch6: e-smith-samba-2.2.0-enable-bind-interfaces.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -28,6 +29,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sun Jan 31 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-8.sme
+- Enable bindinterfaces by default [SME: 3325]
+
 * Sun Jan 31 2010 Stephen Noble <support@dungog.net> 2.2.0-7.sme
 - Set recyle bin permissions [SME: 5600]
 
@@ -1015,6 +1019,7 @@ Configuration files and templates for the Samba daemon.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

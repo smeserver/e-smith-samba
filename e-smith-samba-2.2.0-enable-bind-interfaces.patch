@@ -1,0 +1,9 @@
+diff -up e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11bindInterfacesOnly.enable-bind-interfaces e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11bindInterfacesOnly
+--- e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11bindInterfacesOnly.enable-bind-interfaces	2002-03-12 23:19:38.000000000 +0100
++++ e-smith-samba-2.0.0/root/etc/e-smith/templates/etc/smb.conf/11bindInterfacesOnly	2010-01-31 10:46:57.000000000 +0100
+@@ -2,4 +2,4 @@
+ # This global parameter allows the Samba admin to limit what
+ # interfaces on a machine will serve smb requests.
+ }
+-bind interfaces only = no
++bind interfaces only = yes
