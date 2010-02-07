@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.26 2010/01/31 10:00:15 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.27 2010/02/07 16:19:34 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 8
+%define release 9
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -16,6 +16,7 @@ Patch3: e-smith-samba-2.2.0-fixwarnings.patch
 Patch4: e-smith-samba-2.2.0-win7samba.patch
 Patch5: e-smith-samba-2.2.0-recylebin_perms.patch
 Patch6: e-smith-samba-2.2.0-enable-bind-interfaces.patch
+Patch7: e-smith-samba-2.2.0-profilev2.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -29,6 +30,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sun Feb 7 2010 Shad L. Lords <slords@mail.com> 2.2.0-9.sme
+- Create/remove V2 profile directories [SME: 3666]
+
 * Sun Jan 31 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-8.sme
 - Enable bindinterfaces by default [SME: 3325]
 
@@ -1020,6 +1024,7 @@ Configuration files and templates for the Samba daemon.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

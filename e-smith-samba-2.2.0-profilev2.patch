@@ -1,0 +1,54 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-create-profiledir.profilev2 e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-create-profiledir
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-create-profiledir.profilev2	2006-03-16 00:01:15.000000000 -0700
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-create-profiledir	2010-02-07 09:16:26.000000000 -0700
+@@ -37,18 +37,21 @@ foreach my $user ( @newusers )
+     die "$user is not a user account\n"
+         unless ( grep /^$user$/, @users );
+ 
+-    my $dir = "/home/e-smith/files/samba/profiles/$user";
++    my @dirs = ("/home/e-smith/files/samba/profiles/$user","/home/e-smith/files/samba/profiles/${user}.V2");
+    
+-    my $pre_existing = ( -d $dir );
+- 
+-    $pre_existing || mkdir $dir, 700 || die "Couldn't create directory $dir\n";
++    foreach my $dir (@dirs)
++    {
++        my $pre_existing = ( -d $dir );
++     
++        $pre_existing || mkdir $dir, 700 || die "Couldn't create directory $dir\n";
+ 
+-    chmod 0700, $dir;	# Remove setgid bit
+-    
+-    next if $pre_existing;
++        chmod 0700, $dir;	# Remove setgid bit
++        
++        next if $pre_existing;
+ 
+-    esmith::util::chownFile($user, $user, $dir) || 
+-        die "Couldn't change ownership of $dir\n";
++        esmith::util::chownFile($user, $user, $dir) || 
++            die "Couldn't change ownership of $dir\n";
++    }
+ }
+ 
+ exit (0);
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.profilev2 e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.profilev2	2005-08-02 15:16:52.000000000 -0600
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir	2010-02-07 09:17:53.000000000 -0700
+@@ -38,8 +38,14 @@ unless ( defined $a && $a->prop('type') 
+ 
+ my $dir = "/home/e-smith/files/samba/profiles/$account";
+ 
+-exit 0 unless ( -d $dir );
++my $existing = ( -d $dir );
+ 
+-rmtree( $dir ) || die "Couldn't remove tree $dir\n";
++$existing && rmtree( $dir ) || die "Couldn't remove tree $dir\n";
++
++$dir = "/home/e-smith/files/samba/profiles/${account}.V2";
++
++my $existing = ( -d $dir );
++
++$existing && rmtree( $dir ) || die "Couldn't remove tree $dir\n";
+ 
+ exit (0);
