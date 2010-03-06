@@ -1,0 +1,12 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.quote-manually e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.quote-manually	2010-03-06 16:34:45.000000000 +0100
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir	2010-03-06 16:44:34.000000000 +0100
+@@ -36,7 +36,7 @@ unless ( defined $a && $a->prop('type') 
+     exit (0);
+ }
+ 
+-my @dirs = qq(/home/e-smith/files/samba/profiles/$account /home/e-smith/files/samba/profiles/$account.V2); 
++my @dirs = ("/home/e-smith/files/samba/profiles/$account" "/home/e-smith/files/samba/profiles/$account.V2"); 
+ 
+ foreach (@dirs) {
+  

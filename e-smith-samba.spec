@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.29 2010/03/06 15:15:17 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.30 2010/03/06 15:46:36 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 10
+%define release 11
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -18,6 +18,7 @@ Patch5: e-smith-samba-2.2.0-recylebin_perms.patch
 Patch6: e-smith-samba-2.2.0-enable-bind-interfaces.patch
 Patch7: e-smith-samba-2.2.0-profilev2.patch
 Patch8: e-smith-samba-2.2.0-refactor-profilev2.patch
+Patch9: e-smith-samba-2.2.0-quote-manually.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -31,6 +32,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-11.sme
+- Properly quote the profile folders manually [SME: 5821]
+
 * Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-10.sme
 - Rework V2 profile patch to fix error on user-delete event [SME: 5821]
 
@@ -1030,6 +1034,7 @@ Configuration files and templates for the Samba daemon.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
