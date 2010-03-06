@@ -1,4 +1,4 @@
-# $Id: e-smith-samba.spec,v 1.28 2010/03/06 09:41:47 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.29 2010/03/06 15:15:17 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
@@ -32,7 +32,7 @@ AutoReqProv: no
 
 %changelog
 * Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-10.sme
-- Rework V2 profile patch to fix template expansion error [SME: 5281]
+- Rework V2 profile patch to fix error on user-delete event [SME: 5821]
 
 * Sun Feb 7 2010 Shad L. Lords <slords@mail.com> 2.2.0-9.sme
 - Create/remove V2 profile directories [SME: 3666]
