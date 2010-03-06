@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.30 2010/03/06 15:46:36 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.31 2010/03/06 16:03:58 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 11
+%define release 12
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -19,6 +19,7 @@ Patch6: e-smith-samba-2.2.0-enable-bind-interfaces.patch
 Patch7: e-smith-samba-2.2.0-profilev2.patch
 Patch8: e-smith-samba-2.2.0-refactor-profilev2.patch
 Patch9: e-smith-samba-2.2.0-quote-manually.patch
+Patch10: e-smith-samba-2.2.0-fail-silently-on-non-existent-folder.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -32,6 +33,10 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-12.sme
+- Add missing comma in previous patch [SME: 5821]
+- Silently skip non-existent profile folder [SME: 5821]
+
 * Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-11.sme
 - Properly quote the profile folders manually [SME: 5821]
 
@@ -1035,6 +1040,7 @@ Configuration files and templates for the Samba daemon.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

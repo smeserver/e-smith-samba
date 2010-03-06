@@ -1,0 +1,20 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.fail-silently-on-non-existent-folder e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.fail-silently-on-non-existent-folder	2010-03-06 16:57:45.000000000 +0100
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir	2010-03-06 16:57:34.000000000 +0100
+@@ -36,13 +36,12 @@ unless ( defined $a && $a->prop('type') 
+     exit (0);
+ }
+ 
+-my @dirs = ("/home/e-smith/files/samba/profiles/$account" "/home/e-smith/files/samba/profiles/$account.V2"); 
++my @dirs = ("/home/e-smith/files/samba/profiles/$account", "/home/e-smith/files/samba/profiles/$account.V2"); 
+ 
+ foreach (@dirs) {
+  
+-    my $existing = ( -d $_ );
+-
+-    $existing && rmtree( $_ ) || die "Couldn't remove tree $_\n";
++    next unless -d $_;
++    rmtree( $_ ) || die "Couldn't remove tree $_\n";
+ 
+ }
+ 
