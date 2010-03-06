@@ -1,0 +1,26 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.refactor-profilev2 e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir.refactor-profilev2	2010-03-06 10:29:40.000000000 +0100
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/user-delete-profiledir	2010-03-06 10:36:19.000000000 +0100
+@@ -36,16 +36,14 @@ unless ( defined $a && $a->prop('type') 
+     exit (0);
+ }
+ 
+-my $dir = "/home/e-smith/files/samba/profiles/$account";
++my @dirs = qq(/home/e-smith/files/samba/profiles/$account /home/e-smith/files/samba/profiles/$account.V2); 
+ 
+-my $existing = ( -d $dir );
++foreach (@dirs) {
++ 
++    my $existing = ( -d $_ );
+ 
+-$existing && rmtree( $dir ) || die "Couldn't remove tree $dir\n";
++    $existing && rmtree( $_ ) || die "Couldn't remove tree $_\n";
+ 
+-$dir = "/home/e-smith/files/samba/profiles/${account}.V2";
+-
+-my $existing = ( -d $dir );
+-
+-$existing && rmtree( $dir ) || die "Couldn't remove tree $dir\n";
++}
+ 
+ exit (0);

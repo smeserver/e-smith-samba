@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.27 2010/02/07 16:19:34 slords Exp $
+# $Id: e-smith-samba.spec,v 1.28 2010/03/06 09:41:47 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 9
+%define release 10
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -17,6 +17,7 @@ Patch4: e-smith-samba-2.2.0-win7samba.patch
 Patch5: e-smith-samba-2.2.0-recylebin_perms.patch
 Patch6: e-smith-samba-2.2.0-enable-bind-interfaces.patch
 Patch7: e-smith-samba-2.2.0-profilev2.patch
+Patch8: e-smith-samba-2.2.0-refactor-profilev2.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -30,6 +31,9 @@ Requires: samba-common >= 3.0.25b
 AutoReqProv: no
 
 %changelog
+* Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-10.sme
+- Rework V2 profile patch to fix template expansion error [SME: 5281]
+
 * Sun Feb 7 2010 Shad L. Lords <slords@mail.com> 2.2.0-9.sme
 - Create/remove V2 profile directories [SME: 3666]
 
@@ -1025,6 +1029,7 @@ Configuration files and templates for the Samba daemon.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
