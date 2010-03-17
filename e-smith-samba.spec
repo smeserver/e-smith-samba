@@ -1,4 +1,4 @@
-# $Id: e-smith-samba.spec,v 1.32 2010/03/17 17:35:11 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.33 2010/03/17 17:39:47 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
@@ -34,7 +34,7 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
-* Wed 17 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-13.sme
+* Wed Mar 17 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-13.sme
 - Add dependency /usr/bin/tdbbackup [SME: 5851]
 
 * Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-12.sme
