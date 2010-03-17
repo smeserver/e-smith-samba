@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.31 2010/03/06 16:03:58 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.32 2010/03/17 17:35:11 snetram Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 12
+%define release 13
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -30,9 +30,13 @@ Requires: e-smith-formmagick >= 1.4.0-9
 Requires: samba >= 3.0.25b
 Requires: samba-client >= 3.0.25b
 Requires: samba-common >= 3.0.25b
+Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed 17 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-13.sme
+- Add dependency /usr/bin/tdbbackup [SME: 5851]
+
 * Sat Mar 6 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-12.sme
 - Add missing comma in previous patch [SME: 5821]
 - Silently skip non-existent profile folder [SME: 5821]
