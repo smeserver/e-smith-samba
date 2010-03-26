@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.33 2010/03/17 17:39:47 snetram Exp $
+# $Id: e-smith-samba.spec,v 1.34 2010/03/26 16:09:17 filippocarletti Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 13
+%define release 14
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -20,6 +20,7 @@ Patch7: e-smith-samba-2.2.0-profilev2.patch
 Patch8: e-smith-samba-2.2.0-refactor-profilev2.patch
 Patch9: e-smith-samba-2.2.0-quote-manually.patch
 Patch10: e-smith-samba-2.2.0-fail-silently-on-non-existent-folder.patch
+Patch11: e-smith-samba-2.2.0-tdb_backup.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -27,13 +28,16 @@ BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
 Requires: e-smith-lib >= 2.2.0-2
 Requires: e-smith-formmagick >= 1.4.0-9
-Requires: samba >= 3.0.25b
-Requires: samba-client >= 3.0.25b
-Requires: samba-common >= 3.0.25b
+Requires: samba >= 3.4.3
+Requires: samba-client >= 3.4.3
+Requires: samba-common >= 3.4.3
 Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Fri Mar 26 2010 Filippo Carletti <filippo.carletti@gmail.com> 2.2.0-14.sme
+- Fix tdb file paths to backup in run script [SME: 5856]
+
 * Wed Mar 17 2010 Jonathan Martens <smeserver-contribs@snetram.nl> 2.2.0-13.sme
 - Add dependency /usr/bin/tdbbackup [SME: 5851]
 
@@ -1045,6 +1049,7 @@ Configuration files and templates for the Samba daemon.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

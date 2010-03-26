@@ -1,0 +1,24 @@
+diff -Naur e-smith-samba-2.2.0-orig/root/var/service/smbd/run e-smith-samba-2.2.0/root/var/service/smbd/run
+--- e-smith-samba-2.2.0-orig/root/var/service/smbd/run	2007-12-15 16:53:09.000000000 +0100
++++ e-smith-samba-2.2.0/root/var/service/smbd/run	2010-03-26 17:02:09.000322373 +0100
+@@ -34,13 +34,13 @@
+ 
+ # Backup critical tdb files
+ for tdb in /etc/samba/secrets \
+-           /var/cache/samba/account_policy \
+-           /var/cache/samba/group_mapping \
+-           /var/cache/samba/ntdrivers \
+-           /var/cache/samba/ntforms \
+-           /var/cache/samba/ntprinters \
+-           /var/cache/samba/registry \
+-           /var/cache/samba/share_info
++           /var/lib/samba/account_policy \
++           /var/lib/samba/group_mapping \
++           /var/lib/samba/ntdrivers \
++           /var/lib/samba/ntforms \
++           /var/lib/samba/ntprinters \
++           /var/lib/samba/registry \
++           /var/lib/samba/share_info
+ do
+     [ -r "$tdb.tdb" ] && tdbbackup "$tdb.tdb" .bak
+ done
