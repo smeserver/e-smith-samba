@@ -1,0 +1,5 @@
+diff -Naur e-smith-samba-2.2.0-orig/root/etc/e-smith/templates/etc/smb.conf/11privateDir e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11privateDir
+--- e-smith-samba-2.2.0-orig/root/etc/e-smith/templates/etc/smb.conf/11privateDir	1970-01-01 01:00:00.000000000 +0100
++++ e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11privateDir	2010-03-30 13:07:47.383993820 +0200
+@@ -0,0 +1 @@
++private dir = /etc/samba
