@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.35 2010/03/30 11:29:43 filippocarletti Exp $
+# $Id: e-smith-samba.spec,v 1.36 2010/06/14 15:15:07 filippocarletti Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 15
+%define release 16
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -22,6 +22,7 @@ Patch9: e-smith-samba-2.2.0-quote-manually.patch
 Patch10: e-smith-samba-2.2.0-fail-silently-on-non-existent-folder.patch
 Patch11: e-smith-samba-2.2.0-tdb_backup.patch
 Patch12: e-smith-samba-2.2.0-private_dir.patch
+Patch13: e-smith-samba-2.2.0-backup-all-tdb-files.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -36,6 +37,10 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Mon Jun 14 2010 Federico Simoncelli <federico.simoncelli@gmail.com> 2.2.0-16.sme
+- Backup all the tdb files (thanks Daniel) [SME: 5856]
+- Post scriptlet fix [SME: 6057]
+
 * Tue Mar 30 2010 Filippo Carletti <filippo.carletti@gmail.com> 2.2.0-15.sme
 - Explicitly declare samba private dir [SME: 5857]
 
@@ -1055,6 +1060,7 @@ Configuration files and templates for the Samba daemon.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
@@ -1137,7 +1143,7 @@ then
 fi
 chown -R smelog.smelog /var/log/{smbd,nmbd}
 # Move back secrets.tdb to private dir
-[ -f /var/lib/samba/private/secrets.tdb ] && mv -f /var/lib/samba/private/secrets.tdb /etc/samba
+[ -f /var/lib/samba/private/secrets.tdb ] && mv -f /var/lib/samba/private/secrets.tdb /etc/samba || :
 
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)

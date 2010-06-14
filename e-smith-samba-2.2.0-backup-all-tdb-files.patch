@@ -1,0 +1,23 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/var/service/smbd/run mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run
+--- e-smith-samba-2.2.0/root/var/service/smbd/run	2010-06-11 09:50:31.000000000 +0200
++++ mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run	2010-06-11 09:50:10.000000000 +0200
+@@ -33,16 +33,10 @@
+ rm -f /var/cache/samba/printing.tdb
+ 
+ # Backup critical tdb files
+-for tdb in /etc/samba/secrets \
+-           /var/lib/samba/account_policy \
+-           /var/lib/samba/group_mapping \
+-           /var/lib/samba/ntdrivers \
+-           /var/lib/samba/ntforms \
+-           /var/lib/samba/ntprinters \
+-           /var/lib/samba/registry \
+-           /var/lib/samba/share_info
++for tdb in /etc/samba/*.tdb \
++           /var/lib/samba/*.tdb
+ do
+-    [ -r "$tdb.tdb" ] && tdbbackup "$tdb.tdb" .bak
++    [ -r "$tdb" ] && tdbbackup "$tdb" .bak
+ done
+ 
+ exec 2>&1
