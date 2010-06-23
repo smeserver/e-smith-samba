@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.36 2010/06/14 15:15:07 filippocarletti Exp $
+# $Id: e-smith-samba.spec,v 1.37 2010/06/23 14:51:19 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 16
+%define release 17
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -30,13 +30,22 @@ BuildRequires: e-smith-devtools >= 1.13.1-03
 Obsoletes: e-smith-regedit
 Requires: e-smith-lib >= 2.2.0-2
 Requires: e-smith-formmagick >= 1.4.0-9
-Requires: samba >= 3.4.3
-Requires: samba-client >= 3.4.3
-Requires: samba-common >= 3.4.3
+Requires: samba3x >= 3.3.8
+Requires: samba3x-client >= 3.3.8
+Requires: samba3x-common >= 3.3.8
+Obsoletes: samba <= 3.1.0
+Obsoletes: samba-client <= 3.1.0
+Obsoletes: samba-common <= 3.1.0
+Obsoletes: samba = 3.4.3-1.1.el5.sme
+Obsoletes: samba-client = 3.4.3-1.1.el5.sme
+Obsoletes: samba-common = 3.4.3-1.1.el5.sme
 Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Jun 23 2010 Shad L. Lords <slords@mail.com> 2.2.0-17.sme
+- Use samba3x package for windows 7 compatibility [SME: 5964]
+
 * Mon Jun 14 2010 Federico Simoncelli <federico.simoncelli@gmail.com> 2.2.0-16.sme
 - Backup all the tdb files (thanks Daniel) [SME: 5856]
 - Post scriptlet fix [SME: 6057]
