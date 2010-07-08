@@ -1,0 +1,10 @@
+diff -up e-smith-samba-2.2.0/root/home/e-smith/files/server-resources/regedit/win7samba.reg.strongkey e-smith-samba-2.2.0/root/home/e-smith/files/server-resources/regedit/win7samba.reg
+--- e-smith-samba-2.2.0/root/home/e-smith/files/server-resources/regedit/win7samba.reg.strongkey	2010-07-08 13:02:55.000000000 -0600
++++ e-smith-samba-2.2.0/root/home/e-smith/files/server-resources/regedit/win7samba.reg	2010-07-08 13:06:13.000000000 -0600
+@@ -3,6 +3,3 @@ Windows Registry Editor Version 5.00
+ [HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManWorkstation\Parameters]
+ "DNSNameResolutionRequired"=dword:00000000
+ "DomainCompatibilityMode"=dword:00000001
+-
+-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\Netlogon\Parameters
+-"RequireStrongKey"=dword:00000000

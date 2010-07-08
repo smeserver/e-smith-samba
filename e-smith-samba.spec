@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.37 2010/06/23 14:51:19 slords Exp $
+# $Id: e-smith-samba.spec,v 1.38 2010/07/08 19:12:07 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 17
+%define release 18
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -23,6 +23,7 @@ Patch10: e-smith-samba-2.2.0-fail-silently-on-non-existent-folder.patch
 Patch11: e-smith-samba-2.2.0-tdb_backup.patch
 Patch12: e-smith-samba-2.2.0-private_dir.patch
 Patch13: e-smith-samba-2.2.0-backup-all-tdb-files.patch
+Patch14: e-smith-samba-2.2.0-strongkey.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -43,6 +44,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Jul 08 2010 Shad L. Lords <slords@mail.com> 2.2.0-18.sme
+- Remove require strong key part of regedit file [SME: 6119]
+
 * Wed Jun 23 2010 Shad L. Lords <slords@mail.com> 2.2.0-17.sme
 - Use samba3x package for windows 7 compatibility [SME: 5964]
 
@@ -1070,6 +1074,7 @@ Configuration files and templates for the Samba daemon.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
