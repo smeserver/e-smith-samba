@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.39 2010/09/23 15:39:18 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.40 2010/09/23 16:21:00 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 19
+%define release 20
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -25,6 +25,7 @@ Patch12: e-smith-samba-2.2.0-private_dir.patch
 Patch13: e-smith-samba-2.2.0-backup-all-tdb-files.patch
 Patch14: e-smith-samba-2.2.0-strongkey.patch
 Patch15: e-smith-samba-2.2.0-slapd_support.patch
+Patch16: e-smith-samba-2.2.0-lanman_password_as_an_option.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -45,6 +46,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Thu Sep 23 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-20.sme
+- povide an option to enable lanman passwords [SME: 6229]
+
 * Thu Sep 23 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-19.sme
 - Add slapd support [SME: 6228]
 
@@ -1080,6 +1084,7 @@ Configuration files and templates for the Samba daemon.
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
