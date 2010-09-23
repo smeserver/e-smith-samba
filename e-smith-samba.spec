@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.38 2010/07/08 19:12:07 slords Exp $
+# $Id: e-smith-samba.spec,v 1.39 2010/09/23 15:39:18 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 18
+%define release 19
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -24,6 +24,7 @@ Patch11: e-smith-samba-2.2.0-tdb_backup.patch
 Patch12: e-smith-samba-2.2.0-private_dir.patch
 Patch13: e-smith-samba-2.2.0-backup-all-tdb-files.patch
 Patch14: e-smith-samba-2.2.0-strongkey.patch
+Patch15: e-smith-samba-2.2.0-slapd_support.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -44,6 +45,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Thu Sep 23 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-19.sme
+- Add slapd support [SME: 6228]
+
 * Wed Jul 08 2010 Shad L. Lords <slords@mail.com> 2.2.0-18.sme
 - Remove require strong key part of regedit file [SME: 6119]
 
@@ -1075,6 +1079,7 @@ Configuration files and templates for the Samba daemon.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
+%patch15 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

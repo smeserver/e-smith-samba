@@ -1,0 +1,30 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/10schemaSamba mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/10schemaSamba
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/10schemaSamba	1970-01-01 01:00:00.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/10schemaSamba	2010-09-12 15:18:43.000000000 +0200
+@@ -0,0 +1 @@
++include         /etc/openldap/schema/samba.schema
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/90indexesSamba mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/90indexesSamba
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/90indexesSamba	1970-01-01 01:00:00.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/90indexesSamba	2010-09-12 15:18:43.000000000 +0200
+@@ -0,0 +1,4 @@
++index sambaSID                             eq,pres
++index sambaPrimaryGroupSID                 eq,pres
++index sambaDomainName                      eq,pres
++
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/94acls10sambaPasswords mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/94acls10sambaPasswords
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/94acls10sambaPasswords	1970-01-01 01:00:00.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/94acls10sambaPasswords	2010-09-12 15:18:43.000000000 +0200
+@@ -0,0 +1,13 @@
++access to attrs=sambaNTPassword
++        by self         peername.ip="127.0.0.1" read
++        by self         ssf=128 read
++        by anonymous    peername.ip="127.0.0.1" auth
++        by anonymous    ssf=128 auth
++        by *            none
++access to attrs=sambaLMPassword
++        by self         peername.ip="127.0.0.1" read
++        by self         ssf=128	read
++        by anonymous    peername.ip="127.0.0.1" auth
++        by anonymous    ssf=128 auth
++        by *            none
++
