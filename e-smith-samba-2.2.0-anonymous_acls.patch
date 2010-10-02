@@ -1,0 +1,10 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/95acls76sambaSamAccount mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/95acls76sambaSamAccount
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/95acls76sambaSamAccount	1970-01-01 01:00:00.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/95acls76sambaSamAccount	2010-10-01 18:52:08.000000000 +0200
+@@ -0,0 +1,6 @@
++{
++
++# Sensible attributes related to sambaSamAccount
++push @sensible, qw/sambaAcctFlags sambaBadPasswordCount sambaBadPasswordTime sambaKickoffTime sambaLogoffTime sambaLogonHours sambaPasswordHistory sambaPrimaryGroupSID sambaPwdCanChange sambaPwdLastSet sambaPwdMustChange sambaUserWorkstations sambaSIDList sambaGroupType/;
++
++}
