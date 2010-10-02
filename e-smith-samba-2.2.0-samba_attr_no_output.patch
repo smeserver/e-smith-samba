@@ -1,0 +1,9 @@
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/95acls76sambaSamAccount.samba_attr_no_output	2010-10-02 13:25:52.000000000 +0200
++++ e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/openldap/slapd.conf/95acls76sambaSamAccount	2010-10-02 13:26:50.000000000 +0200
+@@ -3,4 +3,6 @@
+ # Sensible attributes related to sambaSamAccount
+ push @sensible, qw/sambaAcctFlags sambaBadPasswordCount sambaBadPasswordTime sambaKickoffTime sambaLogoffTime sambaLogonHours sambaPasswordHistory sambaSID sambaPrimaryGroupSID sambaPwdCanChange sambaPwdLastSet sambaPwdMustChange sambaUserWorkstations sambaSIDList sambaGroupType/;
+ 
++$OUT .= '';
++
+ }
