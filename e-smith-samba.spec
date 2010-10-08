@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.43 2010/10/02 11:29:21 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.44 2010/10/08 14:41:56 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 23
+%define release 24
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -49,6 +49,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Fri Oct 8 2010 Shad L. Lords <slords@mail.com> 2.2.0-24.sme
+- Fix moving secrets.tdb file [SME: 6057]
+
 * Sat Oct 2 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-23.sme
 - Empty output when listing sensible attribtues SME: 6254]
 
@@ -1182,7 +1185,10 @@ then
 fi
 chown -R smelog.smelog /var/log/{smbd,nmbd}
 # Move back secrets.tdb to private dir
-[ -f /var/lib/samba/private/secrets.tdb ] && mv -f /var/lib/samba/private/secrets.tdb /etc/samba || :
+if [ -f /var/lib/samba/private/secrets.tdb ]
+then
+    mv -f /var/lib/samba/private/secrets.tdb /etc/samba
+fi
 
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
