@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.44 2010/10/08 14:41:56 slords Exp $
+# $Id: e-smith-samba.spec,v 1.45 2010/10/14 20:45:34 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 24
+%define release 25
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -29,6 +29,7 @@ Patch16: e-smith-samba-2.2.0-lanman_password_as_an_option.patch
 Patch17: e-smith-samba-2.2.0-anonymous_acls.patch
 Patch18: e-smith-samba-2.2.0-add_sambasid_to_sensible_attrs.patch
 Patch19: e-smith-samba-2.2.0-samba_attr_no_output.patch
+Patch20: e-smith-samba-2.2.0-fix_limited_anon_access.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -49,11 +50,14 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Thu Oct 14 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-25.sme
+- Fix anonymous access [SME: 6254]
+
 * Fri Oct 8 2010 Shad L. Lords <slords@mail.com> 2.2.0-24.sme
 - Fix moving secrets.tdb file [SME: 6057]
 
 * Sat Oct 2 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-23.sme
-- Empty output when listing sensible attribtues SME: 6254]
+- Empty output when listing sensible attribtues [SME: 6254]
 
 * Sat Oct 2 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-22.sme
 - Add sambaSID to the list of sensible attributes [SME: 6254]
@@ -1103,6 +1107,7 @@ Configuration files and templates for the Samba daemon.
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
+%patch20 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
