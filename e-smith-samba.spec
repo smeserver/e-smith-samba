@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.45 2010/10/14 20:45:34 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.46 2010/10/27 21:33:21 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 25
+%define release 26
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -30,6 +30,7 @@ Patch17: e-smith-samba-2.2.0-anonymous_acls.patch
 Patch18: e-smith-samba-2.2.0-add_sambasid_to_sensible_attrs.patch
 Patch19: e-smith-samba-2.2.0-samba_attr_no_output.patch
 Patch20: e-smith-samba-2.2.0-fix_limited_anon_access.patch
+Patch21: e-smith-samba-2.2.0-fix_modify.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -50,6 +51,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Oct 27 2010 Shad L. Lords <slords@mail.com> 2.2.0-26.sme
+- Change the way groups are modified on samba3x [SME: 6314]
+
 * Thu Oct 14 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-25.sme
 - Fix anonymous access [SME: 6254]
 
@@ -1108,6 +1112,7 @@ Configuration files and templates for the Samba daemon.
 %patch18 -p1
 %patch19 -p1
 %patch20 -p1
+%patch21 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
