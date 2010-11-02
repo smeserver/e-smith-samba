@@ -29,7 +29,7 @@ diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-acco
 +{
 +    system(
 +            "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "useradd",
-+            "--usebase=ou=Computers,$base",
++            "--userbase=ou=Computers,$base",
 +            "-c", "Hostname account for $machineName",
 +            "-o",
 +            "-d", "/noexistingpath",
@@ -40,7 +40,7 @@ diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-acco
 +    warn "create-machine-account $machineName: Locking account\n";
 +
 +    system("/usr/sbin/cpu", "-C/etc/cpu-system.conf", "usermod", 
-+           "--usebase=ou=Computers,$base",
++           "--userbase=ou=Computers,$base",
 +           "-o", 
 +           "-L", 
 +           "$machineName"

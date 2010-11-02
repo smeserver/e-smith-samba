@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.47 2010/11/02 16:57:29 slords Exp $
+# $Id: e-smith-samba.spec,v 1.48 2010/11/02 19:09:27 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 29
+%define release 30
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -54,6 +54,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Tue Nov 2 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-30.sme
+- Fix a typo in create-machine-account [SME: 6321]
+
 * Tue Nov 2 2010 Shad L. Lords <slords@mail.com> 2.2.0-29.sme
 - Clean up old domain entries when using ldap [SME: 6322]
 
