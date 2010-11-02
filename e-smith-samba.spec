@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.48 2010/11/02 19:09:27 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.49 2010/11/02 19:49:18 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 30
+%define release 31
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -34,6 +34,7 @@ Patch21: e-smith-samba-2.2.0-fix_modify.patch
 Patch22: e-smith-samba-2.2.0-enable-cpu.patch
 Patch23: e-smith-samba-2.2.0-ldap-auth.patch
 Patch24: e-smith-samba-2.2.0-remove-domains.patch
+Patch25: e-smith-samba-2.2.0-better-ldap.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -54,6 +55,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Tue Nov 2 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-31.sme
+- Always use cpu, do unix if ldap{Auth} is disabled [SME: 6321]
+
 * Tue Nov 2 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-30.sme
 - Fix a typo in create-machine-account [SME: 6321]
 
@@ -1131,6 +1135,7 @@ Configuration files and templates for the Samba daemon.
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
+%patch25 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

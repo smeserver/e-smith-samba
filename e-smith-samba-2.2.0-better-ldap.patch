@@ -1,0 +1,85 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account.better-ldap e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account.better-ldap	2010-11-02 13:25:37.000000000 -0600
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account	2010-11-02 13:31:21.000000000 -0600
+@@ -31,6 +31,8 @@ my $a = esmith::AccountsDB->open || die 
+ my $c = esmith::ConfigDB->open_ro || die "Could not open Config DB";
+ 
+ my $ldapauth = $c->get('ldap')->prop('Authentication') || 'disabled';
++my $x = 0; # exit value
++
+ my $domain = $c->get('DomainName')->value();
+ my $base = esmith::util::ldapBase ($domain);
+ 
+@@ -60,27 +62,7 @@ esmith::util::setRealToEffective();
+ 
+ warn "create-machine-account $machineName: Creating Unix user and group\n";
+ 
+-if ($ldapauth eq 'enabled')
+-{
+-    system(
+-            "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "useradd",
+-            "--userbase=ou=Computers,$base",
+-            "-c", "Hostname account for $machineName",
+-            "-o",
+-            "-d", "/noexistingpath",
+-            "-s", "/bin/false",
+-            "$machineName"
+-        ) == 0 or die "Failed to create account $machineName.\n";
+-
+-    warn "create-machine-account $machineName: Locking account\n";
+-
+-    system("/usr/sbin/cpu", "-C/etc/cpu-system.conf", "usermod", 
+-           "--userbase=ou=Computers,$base",
+-           "-o", 
+-           "-L", 
+-           "$machineName"
+-    ) == 0 or warn("Could not lock password for $machineName\n");
+-}
++if ($ldapauth ne 'enabled')
+ else
+ {
+     system(
+@@ -90,20 +72,37 @@ else
+             "-d", "/noexistingpath",
+             "-s", "/bin/false",
+             "$machineName"
+-        ) == 0 or die "Failed to create account $machineName.\n";
+-
+-    warn "create-machine-account $machineName: Locking account\n";
++        ) == 0 or ( $x = 255, warn "Failed to create (unix) account $machineName.\n" );
+ 
+     system("/usr/bin/passwd", "-l", "$machineName") == 0
+-        or warn("Could not lock password for $machineName\n");
++        or ( $x = 255, warn "Failed locking (unix) password for $machineName\n" );
+ }
+ 
++system(
++        "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "useradd",
++        "--userbase=ou=Computers,$base",
++        "-c", "Hostname account for $machineName",
++        "-o",
++        "-d", "/noexistingpath",
++        "-s", "/bin/false",
++        "$machineName"
++    ) == 0 or ( $x = 255, warn "Failed to create (ldap) account $machineName.\n" );
++
++system("/usr/sbin/cpu", "-C/etc/cpu-system.conf", "usermod", 
++       "--userbase=ou=Computers,$base",
++       "-o", 
++       "-L", 
++       "$machineName"
++) == 0 or ( $x = 255, warn "Failed locking (ldap) password for $machineName\n" );
++
++warn "create-machine-account $machineName: Locking account\n";
++
+ # warn "create-machine-account $machineName: Creating smbpasswd account\n";
+ #
+ # Samba adds the smbpasswd account after it calls this script.
+ # However, we may want to do this if we call this script directly
+ #
+ # system("/usr/bin/smbpasswd", "-a", "-m", "$machineName") == 0 
+-#     or warn("Could not create smb password entry for $machineName\n");;
++#     or warn "Could not create smb password entry for $machineName\n";
+ 
+-exit (0);
++exit ($x);
