@@ -1,0 +1,71 @@
+diff -up e-smith-samba-2.2.0/createlinks.remove-domains e-smith-samba-2.2.0/createlinks
+--- e-smith-samba-2.2.0/createlinks.remove-domains     2010-10-28 08:45:52.000000000 -0600
++++ e-smith-samba-2.2.0/createlinks   2010-10-28 08:45:17.000000000 -0600
+@@ -83,6 +83,7 @@
+ 
+ $event = "workgroup-update";
+ event_link("update-domain-group-maps", $event, "56");
++event_link("cleanup-domains", $event, "65");
+ safe_symlink("sigterm", "root/etc/e-smith/events/$event/services2adjust/dhcpd");
+ safe_symlink("sigterm", "root/etc/e-smith/events/$event/services2adjust/smbd");
+ safe_symlink("sigterm", "root/etc/e-smith/events/$event/services2adjust/nmbd");
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/cleanup-domains.remove-domains e-smith-samba-2.2.0/root/etc/e-smith/events/actions/cleanup-domains
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/cleanup-domains.remove-domains	2010-11-02 09:51:35.000000000 -0600
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/cleanup-domains	2010-11-02 10:07:43.000000000 -0600
+@@ -0,0 +1,56 @@
++#!/usr/bin/perl -w
++
++package esmith;
++
++use strict;
++use Errno;
++use esmith::ConfigDB;
++use esmith::util;
++use Net::LDAP;
++
++my $c = esmith::ConfigDB->open_ro;
++
++# Don't attempt to update ldap unles master
++exit(0) unless ($c->get('ldap')->prop('Authentication') || 'disabled') eq 'enabled';
++
++my $l = $c->get('ldap');
++my $status = $l->prop('status') || "disabled";
++unless ($status eq "enabled" )
++{
++    warn "Not running action script $0, LDAP service not enabled!\n";
++    exit(0);
++}
++
++my $domain = $c->get('DomainName')
++|| die("Couldn't determine domain name");
++$domain = $domain->value;
++
++my $base = esmith::util::ldapBase ($domain);
++my $pw = esmith::util::LdapPassword();
++
++my $ldap = Net::LDAP->new('localhost')
++    or die "$@";
++
++$ldap->bind(
++    dn => "cn=root,$base",
++    password => $pw
++);
++
++my $smb = $c->get('smb');
++my $domName = $smb->prop('Workgroup') || 'mitel-network';
++if ( ($smb->prop('ServerRole') || 'WS') eq 'WS' )
++{
++    $domName = $smb->prop('ServerName') || 'e-smith-server';
++}
++
++my $result = $ldap->search( base => $base, 
++    filter => "(&(objectClass=sambaDomain)(!(sambaDomainName=$domName)))", 
++    scope => 'one' 
++);
++die "failed looking up sambaDomainName entry: ", $result->error if $result->code;
++
++foreach ($result->entries)
++{
++    $_->delete;
++    $_->update($ldap);
++}

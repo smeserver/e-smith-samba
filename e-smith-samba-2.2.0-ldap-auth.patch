@@ -1,0 +1,136 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps.ldap-auth e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps.ldap-auth	2010-11-01 12:00:21.000000000 -0600
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-01 12:03:56.000000000 -0600
+@@ -5,12 +5,25 @@ package esmith;
+ use strict;
+ use Errno;
+ use esmith::AccountsDB;
++use esmith::ConfigDB;
++use esmith::util;
+ 
+ # events: console-save, bootstrap-console-save, group-modify-samba, group-create
+ #         post-install, post-upgrade, workgroup-update
+ my $debug = "--debuglevel=1";
+ 
+ my $a = esmith::AccountsDB->open_ro or die "Couldn't open accounts db\n";
++my $c = esmith::ConfigDB->open_ro or die "Could not open Config DB";
++
++my $ldapauth = $c->get('ldap')->prop('Authentication') || 'disabled';
++my $pw = esmith::util::LdapPassword();
++
++if ($ldapauth eq 'enabled')
++{
++    # Add the LDAP admin password in secret.tdb
++    warn "Couldn't add LDAP password in secret.tdb\n" unless
++        system("/usr/bin/smbpasswd", "-w", "$pw") == 0;
++}
+ 
+ my $g = `/usr/bin/net getlocalsid`;
+ unless ($g =~ /SID.*is: (.+)/) {
+@@ -20,6 +33,12 @@ unless ($g =~ /SID.*is: (.+)/) {
+     rename '/var/cache/samba/wins.dat','/var/cache/samba/wins.'.time;
+     $g = `/usr/bin/net getlocalsid`;
+     $g =~ /SID.*is: (.+)/ or die "Could not get current sid\n";
++    if ($ldapauth eq 'enabled')
++    {
++        # Add the LDAP admin password in secret.tdb
++        warn "Couldn't add LDAP password in secret.tdb\n" unless
++            system("/usr/bin/smbpasswd", "-w", "$pw") == 0;
++    }
+ }
+ my $local_sid = $1;
+ 
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11passdbBackend.ldap-auth e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11passdbBackend
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11passdbBackend.ldap-auth	2005-02-17 16:04:02.000000000 -0700
++++ e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11passdbBackend	2010-11-01 12:06:50.000000000 -0600
+@@ -1,4 +1,25 @@
+ {
+ #Set the Samba user account dbase backend
+-}
++    if ( ($ldap{Authentication} || 'disabled') eq 'enabled')
++    {
++        my $base = esmith::util::ldapBase ($DomainName);
++        $OUT .= <<EOF;
++passdb backend = ldapsam:ldap://localhost
++
++ldap admin dn = cn=root,$base
++ldap suffix = $base
++ldap group suffix = ou=Groups
++ldap user suffix = ou=Users
++ldap machine suffix = ou=Computers
++ldap delete dn = no
++ldap passwd sync = yes
++ldap ssl = off
++EOF
++    }
++    else
++    {
++        $OUT .= <<EOF;
+ passdb backend = smbpasswd:/etc/samba/smbpasswd
++EOF
++    }
++}
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11unixPasswordSync.ldap-auth e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11unixPasswordSync
+--- e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11unixPasswordSync.ldap-auth	2007-12-15 08:53:08.000000000 -0700
++++ e-smith-samba-2.2.0/root/etc/e-smith/templates/etc/smb.conf/11unixPasswordSync	2010-11-01 12:09:26.000000000 -0600
+@@ -5,10 +5,23 @@
+ # NOTE2: You do NOT need these to allow workstations to change only
+ #        the encrypted SMB passwords. They allow the Unix password
+ #        to be kept in sync with the SMB password.
+-}
++
++    if ( ($ldap{Authentication} || 'disabled') eq 'enabled')
++    {
++        $OUT .= <<EOF;
++unix password sync = no
++pam password change = no
++EOF
++    }
++    else
++    {
++        $OUT .= <<'EOF';
+ unix password sync = Yes
+ pam password change = Yes
+ 
+ passwd program = /usr/bin/passwd %u 
+ passwd chat = *New*UNIX*password* %n\n *ReType*new*UNIX*password* %n\n *passwd:*all*authentication*tokens*updated*successfully*
+ check password script = /sbin/e-smith/samba_check_password
++EOF
++    }
++}
+diff -up e-smith-samba-2.2.0/root/var/service/smbd/run.ldap-auth e-smith-samba-2.2.0/root/var/service/smbd/run
+--- e-smith-samba-2.2.0/root/var/service/smbd/run.ldap-auth	2010-11-01 12:00:21.000000000 -0600
++++ e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-01 12:11:21.000000000 -0600
+@@ -8,6 +8,8 @@
+ #fi
+ # We currently don't care about /etc/sysconfig/samba, but that may change.
+ 
++ldapauth=$(/sbin/e-smith/config getprop ldap Authentication || echo disabled)
++
+ status=$(/sbin/e-smith/config getprop smb status)
+ if [ "$status" = "disabled" ]
+ then
+@@ -39,5 +41,10 @@ do
+     [ -r "$tdb" ] && tdbbackup "$tdb" .bak
+ done
+ 
++if [ "$ldapauth" == "enabled" ]
++then
++    /usr/bin/smbpasswd -w "$(cat /etc/ldap.secret)"
++fi
++
+ exec 2>&1
+ exec $smbd -F
+diff -up e-smith-samba-2.2.0/createlinks.ldap-auth e-smith-samba-2.2.0/createlinks
+--- e-smith-samba-2.2.0/createlinks.ldap-auth	2007-12-15 08:53:09.000000000 -0700
++++ e-smith-samba-2.2.0/createlinks	2010-11-01 12:14:17.000000000 -0600
+@@ -31,7 +31,8 @@
+ 
+ my $event = "console-save";
+ 
+-$event = "bootstrap-console-save";
++$event = "bootstrap-ldap-save";
++templates2events("/etc/samba/smb.conf", $event);
+ event_link("update-domain-group-maps", $event, "56");
+ 
+ $event = "group-create";

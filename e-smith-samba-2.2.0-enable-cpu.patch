@@ -1,0 +1,70 @@
+diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account.enable-cpu e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account.enable-cpu	2005-04-19 08:19:17.000000000 -0600
++++ e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account	2010-11-01 11:57:31.000000000 -0600
+@@ -28,6 +28,11 @@ use esmith::AccountsDB;
+ use esmith::util;
+ 
+ my $a = esmith::AccountsDB->open || die "Couldn't open accounts db\n";
++my $c = esmith::ConfigDB->open_ro || die "Could not open Config DB";
++
++my $ldapauth = $c->get('ldap')->prop('Authentication') || 'disabled';
++my $domain = $c->get('DomainName')->value();
++my $base = esmith::util::ldapBase ($domain);
+ 
+ my $event = $ARGV [0];
+ my $machineName = $ARGV [1];
+@@ -55,19 +60,43 @@ esmith::util::setRealToEffective();
+ 
+ warn "create-machine-account $machineName: Creating Unix user and group\n";
+ 
+-system(
+-	"/usr/sbin/useradd",
+-	"-c", "Hostname account for $machineName",
+-	"-M",
+-	"-d", "/noexistingpath",
+-	"-s", "/bin/false",
+-	"$machineName"
+-    ) == 0 or die "Failed to create account $machineName.\n";
++if ($domainauth eq 'enabled')
++{
++    system(
++            "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "useradd",
++            "--usebase=ou=Computers,$base",
++            "-c", "Hostname account for $machineName",
++            "-o",
++            "-d", "/noexistingpath",
++            "-s", "/bin/false",
++            "$machineName"
++        ) == 0 or die "Failed to create account $machineName.\n";
++
++    warn "create-machine-account $machineName: Locking account\n";
++
++    system("/usr/sbin/cpu", "-C/etc/cpu-system.conf", "usermod", 
++           "--usebase=ou=Computers,$base",
++           "-o", 
++           "-L", 
++           "$machineName"
++    ) == 0 or warn("Could not lock password for $machineName\n");
++}
++else
++{
++    system(
++            "/usr/sbin/useradd",
++            "-c", "Hostname account for $machineName",
++            "-M",
++            "-d", "/noexistingpath",
++            "-s", "/bin/false",
++            "$machineName"
++        ) == 0 or die "Failed to create account $machineName.\n";
+ 
+-warn "create-machine-account $machineName: Locking account\n";
++    warn "create-machine-account $machineName: Locking account\n";
+ 
+-system("/usr/bin/passwd", "-l", "$machineName") == 0
+-    or warn("Could not lock password for $machineName\n");
++    system("/usr/bin/passwd", "-l", "$machineName") == 0
++        or warn("Could not lock password for $machineName\n");
++}
+ 
+ # warn "create-machine-account $machineName: Creating smbpasswd account\n";
+ #

@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.46 2010/10/27 21:33:21 slords Exp $
+# $Id: e-smith-samba.spec,v 1.47 2010/11/02 16:57:29 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 26
+%define release 29
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -31,6 +31,9 @@ Patch18: e-smith-samba-2.2.0-add_sambasid_to_sensible_attrs.patch
 Patch19: e-smith-samba-2.2.0-samba_attr_no_output.patch
 Patch20: e-smith-samba-2.2.0-fix_limited_anon_access.patch
 Patch21: e-smith-samba-2.2.0-fix_modify.patch
+Patch22: e-smith-samba-2.2.0-enable-cpu.patch
+Patch23: e-smith-samba-2.2.0-ldap-auth.patch
+Patch24: e-smith-samba-2.2.0-remove-domains.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -51,6 +54,15 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Tue Nov 2 2010 Shad L. Lords <slords@mail.com> 2.2.0-29.sme
+- Clean up old domain entries when using ldap [SME: 6322]
+
+* Mon Nov 1 2010 Shad L. Lords <slords@mail.com> 2.2.0-28.sme
+- Auth against ldap if it is master [SME: 6321]
+
+* Mon Nov 1 2010 Shad L. Lords <slords@mail.com> 2.2.0-27.sme
+- Change the way groups are modified on samba3x [SME: 6314]
+
 * Wed Oct 27 2010 Shad L. Lords <slords@mail.com> 2.2.0-26.sme
 - Change the way groups are modified on samba3x [SME: 6314]
 
@@ -1113,6 +1125,9 @@ Configuration files and templates for the Samba daemon.
 %patch19 -p1
 %patch20 -p1
 %patch21 -p1
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
