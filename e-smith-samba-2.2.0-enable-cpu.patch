@@ -25,7 +25,7 @@ diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-acco
 -	"-s", "/bin/false",
 -	"$machineName"
 -    ) == 0 or die "Failed to create account $machineName.\n";
-+if ($domainauth eq 'enabled')
++if ($ldapauth eq 'enabled')
 +{
 +    system(
 +            "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "useradd",
