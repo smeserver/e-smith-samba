@@ -61,14 +61,14 @@ diff -up e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-acco
 +        "-d", "/noexistingpath",
 +        "-s", "/bin/false",
 +        "$machineName"
-+    ) == 0 or ( $x = $ldapauth ne 'enabled ? $x : 255, warn "Failed to create (ldap) account $machineName.\n" );
++    ) == 0 or ( $x = $ldapauth ne 'enabled' ? $x : 255, warn "Failed to create (ldap) account $machineName.\n" );
 +
 +system("/usr/sbin/cpu", "-C/etc/cpu-system.conf", "usermod", 
 +       "--userbase=ou=Computers,$base",
 +       "-o", 
 +       "-L", 
 +       "$machineName"
-+) == 0 or ( $x = $ldapauth ne 'enabled ? $x : 255, warn "Failed locking (ldap) password for $machineName\n" );
++) == 0 or ( $x = $ldapauth ne 'enabled' ? $x : 255, warn "Failed locking (ldap) password for $machineName\n" );
 +
 +warn "create-machine-account $machineName: Locking account\n";
 +

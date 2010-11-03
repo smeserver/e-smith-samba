@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.53 2010/11/03 18:23:05 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.54 2010/11/03 18:55:20 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 34
+%define release 35
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -56,6 +56,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-35.sme
+- Fix cpu critical patch missing ' [SME: 6330]
+
 * Wed Nov 3 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-34.sme
 - rename store-ldap-passwd and link it in other events [SME: 6332]
 
