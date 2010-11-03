@@ -1,17 +1,22 @@
 diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/createlinks mezzanine_patched_e-smith-samba-2.2.0/createlinks
---- e-smith-samba-2.2.0/createlinks	2010-11-03 18:55:23.000000000 +0100
-+++ mezzanine_patched_e-smith-samba-2.2.0/createlinks	2010-11-03 18:29:07.000000000 +0100
-@@ -33,6 +33,7 @@
+--- e-smith-samba-2.2.0/createlinks	2010-11-03 19:12:38.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/createlinks	2010-11-03 19:12:36.000000000 +0100
+@@ -29,6 +29,12 @@
+     templates2events($file, qw(console-save bootstrap-console-save));
+ }
+ 
++foreach (qw(console-save bootstrap-console-save bootstrap-ldap-save
++            post-install post-upgrade workgroup-update))
++{
++    event_link('store-ldap-smbpasswd', $_, "06");
++}
++
+ my $event = "console-save";
  
  $event = "bootstrap-ldap-save";
- templates2events("/etc/samba/smb.conf", $event);
-+event_link("store-ldap-passwd", $event, "06");
- event_link("update-domain-group-maps", $event, "56");
- 
- $event = "group-create";
-diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd
---- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd	1970-01-01 01:00:00.000000000 +0100
-+++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd	2010-11-03 18:55:21.000000000 +0100
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-smbpasswd mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-smbpasswd
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-smbpasswd	1970-01-01 01:00:00.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-smbpasswd	2010-11-03 19:10:59.000000000 +0100
 @@ -0,0 +1,40 @@
 +#!/usr/bin/perl -w
 +
@@ -54,8 +59,8 @@ diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/act
 +die "Error storing LDAP password in secret.tdb\n" unless
 +    system('/usr/bin/smbpasswd', '-w', "$pw") == 0;
 diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps
---- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-03 18:55:23.000000000 +0100
-+++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-03 18:29:53.000000000 +0100
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-03 19:12:38.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-03 19:10:59.000000000 +0100
 @@ -18,13 +18,6 @@
  my $ldapauth = $c->get('ldap')->prop('Authentication') || 'disabled';
  my $pw = esmith::util::LdapPassword();
@@ -71,8 +76,8 @@ diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/act
  unless ($g =~ /SID.*is: (.+)/) {
      warn "Unable to determine SID.  Clearning cache to see if it helps.";
 diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/var/service/smbd/run mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run
---- e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-03 18:55:23.000000000 +0100
-+++ mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-03 18:29:31.000000000 +0100
+--- e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-03 19:12:38.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-03 19:10:59.000000000 +0100
 @@ -41,10 +41,5 @@
      [ -r "$tdb" ] && tdbbackup "$tdb" .bak
  done
