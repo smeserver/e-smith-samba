@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.49 2010/11/02 19:49:18 slords Exp $
+# $Id: e-smith-samba.spec,v 1.50 2010/11/03 14:01:03 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 31
+%define release 32
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -55,6 +55,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-32.sme
+- Make cpu calls critical only with ldap{Auth} is enabled [SME: 6330]
+
 * Tue Nov 2 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-31.sme
 - Always use cpu, do unix if ldap{Auth} is disabled [SME: 6321]
 
