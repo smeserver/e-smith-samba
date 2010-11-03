@@ -1,4 +1,4 @@
-# $Id: e-smith-samba.spec,v 1.52 2010/11/03 18:21:39 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.53 2010/11/03 18:23:05 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
@@ -57,7 +57,7 @@ AutoReqProv: no
 
 %changelog
 * Wed Nov 3 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-34.sme
-- rename store-ldap-passwd and link it in other events [SME: 6232]
+- rename store-ldap-passwd and link it in other events [SME: 6332]
 
 * Wed Nov 3 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-33.sme
 - Store the ldap admin pw early in the bootstrap-ldap-save event [SME: 6332]
