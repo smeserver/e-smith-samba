@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.50 2010/11/03 14:01:03 slords Exp $
+# $Id: e-smith-samba.spec,v 1.51 2010/11/03 17:56:50 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 32
+%define release 33
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -35,6 +35,7 @@ Patch22: e-smith-samba-2.2.0-enable-cpu.patch
 Patch23: e-smith-samba-2.2.0-ldap-auth.patch
 Patch24: e-smith-samba-2.2.0-remove-domains.patch
 Patch25: e-smith-samba-2.2.0-better-ldap.patch
+Patch26: e-smith-samba-2.2.0-store_ldap_pw.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -55,6 +56,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Nov 3 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-33.sme
+- Store the ldap admin pw early in the bootstrap-ldap-save event [SME: 6332]
+
 * Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-32.sme
 - Make cpu calls critical only with ldap{Auth} is enabled [SME: 6330]
 
@@ -1139,6 +1143,7 @@ Configuration files and templates for the Samba daemon.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
+%patch26 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

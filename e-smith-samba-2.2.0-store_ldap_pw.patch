@@ -1,0 +1,86 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/createlinks mezzanine_patched_e-smith-samba-2.2.0/createlinks
+--- e-smith-samba-2.2.0/createlinks	2010-11-03 18:55:23.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/createlinks	2010-11-03 18:29:07.000000000 +0100
+@@ -33,6 +33,7 @@
+ 
+ $event = "bootstrap-ldap-save";
+ templates2events("/etc/samba/smb.conf", $event);
++event_link("store-ldap-passwd", $event, "06");
+ event_link("update-domain-group-maps", $event, "56");
+ 
+ $event = "group-create";
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd	1970-01-01 01:00:00.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/store-ldap-passwd	2010-11-03 18:55:21.000000000 +0100
+@@ -0,0 +1,40 @@
++#!/usr/bin/perl -w
++
++#----------------------------------------------------------------------
++# copyright (C) 2010 Firewall Services
++# daniel@firewall-services.com
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++# 
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++# 
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
++#----------------------------------------------------------------------
++
++use esmith::ConfigDB;
++use esmith::util;
++
++my $c = esmith::ConfigDB->open_ro;
++my $l = $c->get('ldap') || die "ldap service not found\n";
++my $s = $l->prop('status') || 'disabled';
++unless ( $s eq 'enabled' ){
++    warn "Not running action script $0, LDAP service not enabled!\n";
++    exit(0);
++}
++exit(0) unless ($l->prop('Authentication') || 'disabled') eq 'enabled';
++
++my $domain = $c->get("DomainName")
++    || die("Could not determine domain name");
++my $base = esmith::util::ldapBase ($domain->value);
++my $pw = esmith::util::LdapPassword();
++
++die "Error storing LDAP password in secret.tdb\n" unless
++    system('/usr/bin/smbpasswd', '-w', "$pw") == 0;
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-03 18:55:23.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/update-domain-group-maps	2010-11-03 18:29:53.000000000 +0100
+@@ -18,13 +18,6 @@
+ my $ldapauth = $c->get('ldap')->prop('Authentication') || 'disabled';
+ my $pw = esmith::util::LdapPassword();
+ 
+-if ($ldapauth eq 'enabled')
+-{
+-    # Add the LDAP admin password in secret.tdb
+-    warn "Couldn't add LDAP password in secret.tdb\n" unless
+-        system("/usr/bin/smbpasswd", "-w", "$pw") == 0;
+-}
+-
+ my $g = `/usr/bin/net getlocalsid`;
+ unless ($g =~ /SID.*is: (.+)/) {
+     warn "Unable to determine SID.  Clearning cache to see if it helps.";
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/var/service/smbd/run mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run
+--- e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-03 18:55:23.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/var/service/smbd/run	2010-11-03 18:29:31.000000000 +0100
+@@ -41,10 +41,5 @@
+     [ -r "$tdb" ] && tdbbackup "$tdb" .bak
+ done
+ 
+-if [ "$ldapauth" == "enabled" ]
+-then
+-    /usr/bin/smbpasswd -w "$(cat /etc/ldap.secret)"
+-fi
+-
+ exec 2>&1
+ exec $smbd -F
