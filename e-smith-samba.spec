@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.54 2010/11/03 18:55:20 slords Exp $
+# $Id: e-smith-samba.spec,v 1.55 2010/11/05 19:06:46 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 35
+%define release 36
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -36,6 +36,7 @@ Patch23: e-smith-samba-2.2.0-ldap-auth.patch
 Patch24: e-smith-samba-2.2.0-remove-domains.patch
 Patch25: e-smith-samba-2.2.0-better-ldap.patch
 Patch26: e-smith-samba-2.2.0-store_ldap_pw.patch
+Patch27: e-smith-samba-2.2.0-usergroup-mapping.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -56,6 +57,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Fri Nov 5 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-36.sme
+- Call samba-group-mapping after user events too [SME: 6339]
+
 * Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-35.sme
 - Fix cpu critical patch missing ' [SME: 6330]
 
@@ -1150,6 +1154,7 @@ Configuration files and templates for the Samba daemon.
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
+%patch27 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

@@ -1,0 +1,20 @@
+diff -up e-smith-samba-2.2.0/createlinks.usergroup-mapping e-smith-samba-2.2.0/createlinks
+--- e-smith-samba-2.2.0/createlinks.usergroup-mapping	2010-11-05 12:42:14.000000000 -0600
++++ e-smith-samba-2.2.0/createlinks	2010-11-05 13:03:44.000000000 -0600
+@@ -78,13 +78,16 @@ event_link("user-create-profiledir", $ev
+ 
+ $event = "user-create";
+ event_link("user-create-profiledir", $event, "20");
++event_link("update-domain-group-maps", $event, "56");
+ safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/smbd");
+ 
+ $event = "user-delete";
++event_link("update-domain-group-maps", $event, "14");
+ event_link("user-delete-profiledir", $event, "20");
+ safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/smbd");
+ 
+ $event = "user-modify";
++event_link("update-domain-group-maps", $event, "56");
+ safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/smbd");
+ 
+ $event = "workgroup-update";
