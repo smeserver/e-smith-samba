@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.55 2010/11/05 19:06:46 slords Exp $
+# $Id: e-smith-samba.spec,v 1.56 2010/11/10 18:51:10 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 36
+%define release 37
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -37,6 +37,7 @@ Patch24: e-smith-samba-2.2.0-remove-domains.patch
 Patch25: e-smith-samba-2.2.0-better-ldap.patch
 Patch26: e-smith-samba-2.2.0-store_ldap_pw.patch
 Patch27: e-smith-samba-2.2.0-usergroup-mapping.patch
+Patch28: e-smith-samba-2.2.0-fixe_create_machine_accounts.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -57,6 +58,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Wed Nov 10 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-37.sme
+- Fix create-machine-accounts script [SME: 6358]
+
 * Fri Nov 5 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-36.sme
 - Call samba-group-mapping after user events too [SME: 6339]
 
@@ -1155,6 +1159,7 @@ Configuration files and templates for the Samba daemon.
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
+%patch28 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
