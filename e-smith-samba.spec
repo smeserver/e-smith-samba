@@ -1,4 +1,4 @@
-# $Id: e-smith-samba.spec,v 1.56 2010/11/10 18:51:10 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.57 2010/11/14 16:46:46 slords Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
@@ -61,10 +61,10 @@ AutoReqProv: no
 * Wed Nov 10 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-37.sme
 - Fix create-machine-accounts script [SME: 6358]
 
-* Fri Nov 5 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-36.sme
+* Fri Nov 5 2010 Shad L. Lords <slords@lordsfam.net> 2.2.0-36.sme
 - Call samba-group-mapping after user events too [SME: 6339]
 
-* Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-35.sme
+* Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net> 2.2.0-35.sme
 - Fix cpu critical patch missing ' [SME: 6330]
 
 * Wed Nov 3 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-34.sme
@@ -73,10 +73,10 @@ AutoReqProv: no
 * Wed Nov 3 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-33.sme
 - Store the ldap admin pw early in the bootstrap-ldap-save event [SME: 6332]
 
-* Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-32.sme
+* Wed Nov 3 2010 Shad L. Lords <slords@lordsfam.net> 2.2.0-32.sme
 - Make cpu calls critical only with ldap{Auth} is enabled [SME: 6330]
 
-* Tue Nov 2 2010 Shad L. Lords <slords@lordsfam.net 2.2.0-31.sme
+* Tue Nov 2 2010 Shad L. Lords <slords@lordsfam.net> 2.2.0-31.sme
 - Always use cpu, do unix if ldap{Auth} is disabled [SME: 6321]
 
 * Tue Nov 2 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-30.sme
