@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.57 2010/11/14 16:46:46 slords Exp $
+# $Id: e-smith-samba.spec,v 1.58 2010/11/30 18:36:54 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 37
+%define release 38
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -38,6 +38,7 @@ Patch25: e-smith-samba-2.2.0-better-ldap.patch
 Patch26: e-smith-samba-2.2.0-store_ldap_pw.patch
 Patch27: e-smith-samba-2.2.0-usergroup-mapping.patch
 Patch28: e-smith-samba-2.2.0-fixe_create_machine_accounts.patch
+Patch29: e-smith-samba-2.2.0-force_uid_gid.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -58,6 +59,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Tue Nov 30 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-38.sme
+- Force uid/gid on machine accounts creation [SME: 6415]
+
 * Wed Nov 10 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2.0-37.sme
 - Fix create-machine-accounts script [SME: 6358]
 
@@ -1160,6 +1164,7 @@ Configuration files and templates for the Samba daemon.
 %patch26 -p1
 %patch27 -p1
 %patch28 -p1
+%patch29 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests

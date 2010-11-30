@@ -1,0 +1,66 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account	2010-11-30 18:57:51.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account	2010-11-30 18:57:47.000000000 +0100
+@@ -54,9 +54,21 @@
+     # Auto-create the accounts database entry. This is bad form, but
+     # the Samba "add user script" is called as the user "admin", who
+     # does not currently have permissions to write to the config database
+-    $a->new_record($machineName, {type => "machine"});
++    $m = $a->new_record($machineName, {type => "machine"});
+ }
+ 
++my $lock = undef;
++my $uid;
++unless ($uid = $m->prop('Uid'))
++{
++    use esmith::lockfile;
++
++    $lock = esmith::lockfile::LockFileOrWait("/home/e-smith/db/accounts");
++    $uid = $a->get_next_uid;
++    $m->set_prop('Uid', $uid);
++}
++my $gid = $m->prop('Gid') || $uid;
++
+ # We really, really need to be root to run "passwd -l"
+ esmith::util::setRealToEffective();
+ 
+@@ -64,8 +76,19 @@
+ 
+ if ($ldapauth ne 'enabled')
+ {
++    # Create the machine's unique group first
++    system(
++            "/usr/sbin/groupadd",
++            "-g",
++            $gid,
++            $machineName
++        ) == 0 or ( $x = 255, warn "Failed to create (unix) group $machineName.\n" );
++
++    # Now create the machine account
+     system(
+             "/usr/sbin/useradd",
++            "-u", $uid,
++            "-g", $gid,
+             "-c", "Hostname account for $machineName",
+             "-M",
+             "-d", "/noexistingpath",
+@@ -77,8 +100,19 @@
+         or ( $x = 255, warn "Failed locking (unix) password for $machineName\n" );
+ }
+ 
++# Create the machine's unique group first (in ldap)
++system( 
++        "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "groupadd",
++        "-g", $gid,
++        "-o",
++        "$machineName"
++    ) == 0 or ( $x = $ldapauth ne 'enabled' ? $x : 255, warn "Failed to create (ldap) group $machineName.\n" );
++
++# Now create the machine account (in ldap)
+ system(
+         "/usr/sbin/cpu", "-C/etc/cpu-system.conf", "useradd",
++        "-u", $uid,
++        "-g", $gid,
+         "--userbase=ou=Computers,$base",
+         "-c", "Hostname account for $machineName",
+         "-o",
