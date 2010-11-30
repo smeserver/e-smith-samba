@@ -1,0 +1,33 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account
+--- e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account	2010-11-30 23:07:57.000000000 +0100
++++ mezzanine_patched_e-smith-samba-2.2.0/root/etc/e-smith/events/actions/create-machine-account	2010-11-30 23:07:41.000000000 +0100
+@@ -121,6 +121,8 @@
+         "$machineName"
+     ) == 0 or ( $x = $ldapauth ne 'enabled' ? $x : 255, warn "Failed to create (ldap) account $machineName.\n" );
+ 
++warn "create-machine-account $machineName: Locking account\n";
++
+ system("/usr/sbin/cpu", "-C/etc/cpu-system.conf", "usermod", 
+        "--userbase=ou=Computers,$base",
+        "-o", 
+@@ -128,14 +130,11 @@
+        "$machineName"
+ ) == 0 or ( $x = $ldapauth ne 'enabled' ? $x : 255, warn "Failed locking (ldap) password for $machineName\n" );
+ 
+-warn "create-machine-account $machineName: Locking account\n";
+-
+-# warn "create-machine-account $machineName: Creating smbpasswd account\n";
+-#
+-# Samba adds the smbpasswd account after it calls this script.
+-# However, we may want to do this if we call this script directly
+-#
+-# system("/usr/bin/smbpasswd", "-a", "-m", "$machineName") == 0 
+-#     or warn "Could not create smb password entry for $machineName\n";
++if ($ldapauth ne 'enabled')
++{
++    warn "create-machine-account $machineName: Creating smbpasswd account\n";
+ 
++    system("/usr/bin/smbpasswd", "-a", "-m", "$machineName") == 0 
++        or warn "Could not create smb password entry for $machineName\n";
++}
+ exit ($x);

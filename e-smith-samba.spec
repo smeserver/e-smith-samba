@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.60 2010/11/30 18:57:35 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.61 2010/11/30 22:09:40 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 39
+%define release 40
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -40,6 +40,7 @@ Patch27: e-smith-samba-2.2.0-usergroup-mapping.patch
 Patch28: e-smith-samba-2.2.0-fixe_create_machine_accounts.patch
 Patch29: e-smith-samba-2.2.0-force_uid_gid.patch
 Patch30: e-smith-samba-2.2.0-migrate_machine_uid.patch
+Patch31: e-smith-samba-2.2.0-create_samba_data_in_event.patch
 Obsoletes: e-smith-netlogon
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildArchitectures: noarch
@@ -60,6 +61,9 @@ Requires: /usr/bin/tdbbackup
 AutoReqProv: no
 
 %changelog
+* Tue Nov 30 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2-0-40.sme
+- Create samba account during event for machine [SME: 6418]
+
 * Tue Nov 30 2010 Daniel Berteaud <daniel@firewall-services.com> 2.2-0-39.sme
 - Migrate existing machine uid in the DB (patch from Shad Lords) [SME: 6415]
 
@@ -1170,6 +1174,7 @@ Configuration files and templates for the Samba daemon.
 %patch28 -p1
 %patch29 -p1
 %patch30 -p1
+%patch31 -p1
 
 %build
 mkdir -p root/etc/e-smith/tests
