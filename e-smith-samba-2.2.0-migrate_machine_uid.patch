@@ -1,0 +1,17 @@
+--- e-smith-samba-2.2.0/root/etc/e-smith/db/accounts/migrate/40MachineUid.migrate_machine_uid	2010-11-30 19:53:06.000000000 +0100
++++ e-smith-samba-2.2.0/root/etc/e-smith/db/accounts/migrate/40MachineUid	2010-11-30 19:53:13.000000000 +0100
+@@ -0,0 +1,14 @@
++{
++    foreach my $machine ($DB->get_all_by_prop(type => 'machine'))
++    {
++        next if defined $machine->prop('Uid');
++
++        my ($uid, $gid) = (getpwnam($machine->key))[2,3];
++
++        next unless defined $uid;
++        $machine->set_prop('Uid', $uid);
++
++        next unless $gid != $uid;
++        $machine->set_prop('Gid', $gid);
++    }
++}
