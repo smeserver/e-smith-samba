@@ -1,10 +1,10 @@
-# $Id: e-smith-samba.spec,v 1.59 2010/11/30 18:55:58 vip-ire Exp $
+# $Id: e-smith-samba.spec,v 1.60 2010/11/30 18:57:35 vip-ire Exp $
 
 Summary: e-smith specific Samba configuration files and templates
 %define name e-smith-samba
 Name: %{name}
 %define version 2.2.0
-%define release 38
+%define release 39
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
